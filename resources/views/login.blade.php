@@ -47,18 +47,18 @@
         <!-- Login box.scss -->
         <!-- ============================================================== -->
         <div class="auth-wrapper d-flex no-block justify-content-center align-items-center position-relative"
-            style="background:url('{{ asset('assets/images/auth-bg.jpg') }}') no-repeat center center;">
+           >
             <div class="auth-box row">
                 <!-- <div class="col-lg-7 col-md-5 modal-bg-img"
 					style="background-image: url('gambar/gambar_web/auth-login.jpg');with:100%;">
 				</div>
 				 -->
                 <!-- <div class="col-lg-7 col-md-5 modal-bg-img" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/ed/SMA_Negeri_2_Padang_Panjang.jpg');" ></div> -->
-                <div class="col-lg-7 col-md-5 modal-bg-img" style="background-image: url('{{ asset('assets/images/logo2.jpeg') }}');"></div>
+                <div class="col-lg-7 col-md-5 modal-bg-img" style="background-image: url('{{ asset('images_sistem/gambar_sekolah.png') }}');"></div>
                 <div class="col-lg-5 col-md-7 bg-white">
                     <div class="p-3">
                         <div class="text-center">
-                            <img src="{{ asset('assets/image_sistem/logo.jpeg') }}" style="width: 30%;" alt="wrapkit">
+                            <img src="{{ asset('images_sistem/logo.png') }}" style="width: 30%;" alt="wrapkit">
                         </div>
                         <h2 class="mt-3 text-center header-login">Absensi Siswa</h2>
                         <p class="text-center">Selamat datang di Sistem Informasi Piket MTSN 5 Kota Padang</p>
@@ -102,7 +102,7 @@
                                         onclick="processLogin()">Login</button>
                                     <button class="btn btn-block btn-dark">
                                         <img width="20px" style="margin-bottom:3px; margin-right:5px"
-                                            alt="Google sign-in" src="{{ asset('assets/image_sistem/logo2.jpeg') }}" />
+                                            alt="Google sign-in" src="{{ asset('assets/images/google-logo.png') }}" />
                                         Login with Google
                                     </button>
                                 </div>
