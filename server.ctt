@@ -1,0 +1,12 @@
+{
+    "name": "piket",
+    "host": "ftp.teamclover.my.id",
+    "protocol": "ftp",
+    "port": 21,
+    "username": "piket@piket.teamclover.my.id",
+    "password": "aLv?pY4X(!j1eM-H",
+    "remotePath": "/",
+    "uploadOnSave": true,
+    "useTempFile": false,
+    "openSsh": false
+}

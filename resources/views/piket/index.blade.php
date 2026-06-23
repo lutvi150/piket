@@ -28,7 +28,7 @@
                                     Tambah
                                     Piket</button>
                                 <a href="{{ route('piket.add-jadwal-tahunan') }}" class="btn btn-success btn-sm"><i
-                                        class="fa fa-plus"></i> Tambah Piket Tahunan</a>
+                                        class="fa fa-plus"></i> Tambah Piket Semester</a>
                             @endif
                             <div id="calendar"></div>
 

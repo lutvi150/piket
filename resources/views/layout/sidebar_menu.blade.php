@@ -44,11 +44,11 @@
                     {{-- <li><a href="{{ route('mapel-detail') }}"><i class="fa fa-home"></i> KELAS</a></li> --}}
                 </ul>
             </li>
-            @if (auth()->user()->hasRole(['admin','guru_piket', 'guru_bk', 'wali_kelas']))
+            @if (auth()->user()->hasRole(['guru_piket', 'guru_bk', 'wali_kelas']))
                 <li><a href="{{ route('rekap-piket') }}"><i class="fa fa-calendar"></i> <span>PIKET</span></a></li>
                 <li><a href="{{ route('pelanggaran') }}"><i class="fa fa-ban"></i> <span>PELANGGARAN</span></a></li>
             @endif
-            @if (auth()->user()->hasRole(['admin','guru_mapel']))
+            @if (auth()->user()->hasRole(['guru_mapel']))
                 <li><a href=""><i class="fa fa-users"></i> <span>ABSEN SISWA</span></a></li>
             @endif;
 
