@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\PelanggaranController;
 use App\Http\Controllers\Api\PiketController;
 use App\Http\Controllers\Api\PiketTahunanController;
 use App\Http\Controllers\Api\SiswaController;
+use App\Http\Controllers\Api\RekapPiketController;
+use App\Http\Controllers\Api\AbsenSiswaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +34,7 @@ Route::prefix('siswa')->group(function () {
     Route::delete('/{id}', [SiswaController::class, 'destroy']);
 });
 Route::prefix('guru')->group(function () {
+    Route::get('/search', [GuruController::class, 'search']);
     Route::get('/walikelas', [GuruController::class, 'getWaliKelas']);
     Route::get('/', [GuruController::class, 'index']);
     Route::post('/', [GuruController::class, 'store']);
@@ -68,4 +71,19 @@ Route::prefix('pelanggaran')->group(function () {
     Route::get('/{id}', [PelanggaranController::class, 'show']);
     Route::put('/{id}', [PelanggaranController::class, 'update']);
     Route::delete('/{id}', [PelanggaranController::class, 'destroy']);
+});
+Route::prefix('rekap-piket')->group(function(){
+    Route::get('/', [RekapPiketController::class, 'index']);
+    Route::get('/print', [RekapPiketController::class, 'printRekap'])->name('rekap-piket.cetak');
+    Route::post('/', [RekapPiketController::class, 'store']);
+    Route::get('/{id}', [RekapPiketController::class, 'show']);
+    Route::put('/{id}', [RekapPiketController::class, 'update']);
+    Route::delete('/{id}', [RekapPiketController::class, 'destroy']);
+});
+Route::prefix('absen-siswa')->group(function(){
+    Route::get('/', [AbsenSiswaController::class, 'index']);
+    Route::post('/', [AbsenSiswaController::class, 'store']);
+    Route::get('/{id}', [AbsenSiswaController::class, 'show']);
+    Route::put('/{id}', [AbsenSiswaController::class, 'update']);
+    Route::delete('/{id}', [AbsenSiswaController::class, 'destroy']);
 });

@@ -51,10 +51,10 @@
                                     <td>{{ strtoupper($ayah['nama'])??"_" }}</td>
                                     <td>{{ strtoupper($ibu['nama'])??"_" }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-danger" onclick="delete_data({{ $item->id }})"><i
-                                                class="fa fa-trash"></i></button>
                                         <button class="btn btn-sm btn-warning" onclick="edit_data({{ $item->id }})"><i
                                                 class="fa fa-edit"></i></button>
+                                        <button class="btn btn-sm btn-danger" onclick="delete_data({{ $item->id }})"><i
+                                                class="fa fa-trash"></i></button>
                                     </td>
                                 </tr>
                                 @endforeach

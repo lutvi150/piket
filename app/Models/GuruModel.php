@@ -31,4 +31,7 @@ class GuruModel extends Model
 
         return asset('assets/images/default.png');
     }
+    public function rekapPiket(){
+        return $this->morphMany(RekapPiket::class, 'piket');
+    }
 }

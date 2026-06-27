@@ -47,14 +47,15 @@
                                             <td>{{ $item->nisn }}</td>
                                             {{-- <td><img class="foto-siswa" src="{{ asset('assets/images/default.png') }}" alt="" srcset=""></td> --}}
                                             <td style="width:40px">
-                                                <button onclick="delete_data({{ $item->id }})"
-                                                    class="btn btn-danger
-                                                    btn-xs"><i
-                                                        class="fa fa-trash"></i></button>
                                                 <button onclick="edit_data({{ $item->id }})"
                                                     class="btn btn-warning
                                                     btn-xs"><i
                                                         class="fa fa-edit"></i></button>
+                                                        
+                                                <button onclick="delete_data({{ $item->id }})"
+                                                    class="btn btn-danger
+                                                    btn-xs"><i
+                                                        class="fa fa-trash"></i></button>
                                             </td>
                                         </tr>
                                     @endforeach

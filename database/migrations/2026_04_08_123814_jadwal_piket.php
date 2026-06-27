@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('tanggal');
             $table->unsignedBigInteger('id_guru');
-            $table->string('keterangan')->nullable();
+            $table->text('keterangan')->nullable();
             $table->timestamps();
             $table->foreign('id_guru')->references('id')->on('guru')->onDelete('cascade');
         });

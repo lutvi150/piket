@@ -52,11 +52,11 @@
                                         @endif
                                     </td>
                                     <td class="">
-                                        <button class="btn btn-sm btn-danger" onclick="delete_data({{ $item->id }})">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
                                         <button class="btn btn-sm btn-warning" onclick="edit_data({{ $item->id }})">
                                             <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="delete_data({{ $item->id }})">
+                                            <i class="fa fa-trash"></i>
                                         </button>
                                         <button class="btn btn-primary btn-sm"
                                             onclick="reset_password({{ $item->id_user }})">

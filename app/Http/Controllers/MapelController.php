@@ -12,7 +12,7 @@ class MapelController extends Controller
      */
     public function index()
     {
-        $title = "Data Mata Pelajaran";
+        $title = "Mata Pelajaran";
         $mapel = Mapel::all();
         return view('mapel.index', compact("mapel", "title"));
     }

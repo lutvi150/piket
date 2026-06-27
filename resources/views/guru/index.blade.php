@@ -56,16 +56,16 @@
                                                 <img src="{{ $item->foto_url }}" alt="Foto Guru" class="foto-siswa">
                                             </td>
                                             <td style="width:40px">
-                                                <button onclick="delete_data({{ $item->id }})"
-                                                    class="btn btn-danger
-                                                    btn-xs"><i
-                                                        class="fa fa-trash"></i></button>
                                                 <button onclick="edit_data({{ $item->id }})"
                                                     class="btn btn-warning
                                                     btn-xs"><i
                                                         class="fa fa-edit"></i></button>
                                                 <button onclick="role_akses({{ $item->id }})"
                                                     class="btn btn-info btn-xs"><i class="fa fa-lock"></i></button>
+                                                <button onclick="delete_data({{ $item->id }})"
+                                                    class="btn btn-danger
+                                                    btn-xs"><i
+                                                        class="fa fa-trash"></i></button>
                                             </td>
                                         </tr>
                                     @endforeach

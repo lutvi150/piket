@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create("kelas", function (Blueprint $table) {
             $table->id();
-            $table->string("nama_kelas")->unique();
+            $table->string("nama_kelas",15)->unique();
             $table->unsignedBigInteger("id_guru")->nullable();
             $table->foreign("id_guru")->references("id")->on("guru")->onDelete("set null");
             $table->timestamps();

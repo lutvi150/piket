@@ -33,5 +33,8 @@ class GuruHadir extends Model
     {
         return $this->belongsTo(KelasModel::class, 'kelas_id');
     }
-    
+     public function rekapPiket()
+    {
+        return $this->morphTo();
+    }
 }

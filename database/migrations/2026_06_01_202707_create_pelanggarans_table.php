@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_siswa');
             $table->string('jenis_pelanggaran');
-            $table->date('tanggal_pelanggaran');
+            $table->date('tanggal_pelanggaran',100);
             $table->integer('poin');
-            $table->string('tindakan_sanksi')->nullable();
-            $table->string('keterangan')->nullable();
+            $table->string('tindakan_sanksi',150)->nullable();
+            $table->text('keterangan')->nullable();
             $table->timestamps();
             $table->foreign('id_siswa')->references('id')->on('siswa')->onDelete('cascade');
         });

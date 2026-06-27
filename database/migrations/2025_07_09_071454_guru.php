@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create("guru", function (Blueprint $table) {
             $table->id();
             $table->integer("id_user")->unique();
-            $table->string("nama_guru");
-            $table->string("nip")->unique();
+            $table->string("nama_guru",100);
+            $table->string("nip",20)->unique();
             $table->enum("jenis_kelamin", ["L", "P"])->default("L");
-            $table->string("golongan");
+            $table->string("golongan",10);
             $table->string("jabatan")->nullable();
             $table->text("foto")->nullable();
             $table->text('alamat');

@@ -51,14 +51,14 @@
                                                     class="label label-primary">{{ $item->guru?->nama_guru ?? '-' }}</label>
                                             </td>
                                             <td style="width:40px">
-                                                <button onclick="delete_data({{ $item->id }})"
-                                                    class="btn btn-danger
-                                                    btn-xs"><i
-                                                        class="fa fa-trash"></i></button>
                                                 <button onclick="edit_data({{ $item->id }})"
                                                     class="btn btn-warning
                                                     btn-xs"><i
                                                         class="fa fa-edit"></i></button>
+                                                <button onclick="delete_data({{ $item->id }})"
+                                                    class="btn btn-danger
+                                                    btn-xs"><i
+                                                        class="fa fa-trash"></i></button>
                                             </td>
                                         </tr>
                                     @endforeach

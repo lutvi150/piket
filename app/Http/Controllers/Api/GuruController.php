@@ -7,6 +7,7 @@ use App\Models\GuruModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class GuruController extends Controller
 {
@@ -27,7 +28,7 @@ class GuruController extends Controller
     // wali kelas
     public function getWaliKelas()
     {
-        $guru=GuruModel::with('user')->whereHas('user', function($query){
+        $guru = GuruModel::with('user')->whereHas('user', function ($query) {
             $query->whereJsonContains('role', 'wali_kelas');
         })->get();
         return response()->json([
@@ -115,13 +116,19 @@ class GuruController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $rules = [
+        $guruModel = GuruModel::findOrFail($id);
+        $rules     = [
             'nama_guru'     => 'required|min:3',
             'nip'           => 'required|numeric',
             'jenis_kelamin' => 'required|in:L,P',
             'alamat'        => 'required',
             'no_hp'         => 'required|numeric|digits_between:10,15',
             'foto'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'email'         => [
+                'required',
+                'email',
+                Rule::unique('users', 'email')->ignore($guruModel->user->id),
+            ],
         ];
         $messages = [
             'nama_guru.required'     => 'Nama guru wajib diisi',
@@ -141,10 +148,11 @@ class GuruController extends Controller
             // 'no_hp.max' => 'No HP maksimal 15 digit',
             'foto.image'             => 'File harus berupa gambar',
             'foto.mimes'             => 'Format gambar harus jpg, jpeg, atau png',
+            'email.required'         => 'Email wajib diisi',
+            'email.email'            => 'Format email tidak valid',
+            'email.unique'           => 'Email sudah digunakan oleh user lain',
         ];
-        // return response()->json([
-        //     'data' => $request->all(),
-        // ]);
+
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
             return response()->json([
@@ -153,7 +161,6 @@ class GuruController extends Controller
                 'errors'  => $validator->errors(),
             ], 422);
         }
-        $guruModel = GuruModel::findOrFail($id);
         if ($request->hasFile('foto')) {
             if ($guruModel->foto && file_exists(public_path('uploads/guru/' . $guruModel->foto))) {
                 unlink(public_path('uploads/guru/' . $guruModel->foto));
@@ -173,6 +180,9 @@ class GuruController extends Controller
             'jenis_kelamin' => $request->jenis_kelamin,
             'alamat'        => $request->alamat,
             'no_hp'         => $request->no_hp,
+        ]);
+        $guruModel->user->update([
+            'email' => $request->email,
         ]);
         return response()->json([
             'status'  => true,
@@ -269,6 +279,17 @@ class GuruController extends Controller
             'status'  => true,
             'message' => 'Roles berhasil diambil.',
             'data'    => is_array($user->role) ? $user->role : json_decode($user->role, true),
+        ], 200);
+    }
+    // search data
+    public function search(Request $request)
+    {
+        $query = $request->q;
+        $guru = GuruModel::where('nama_guru', 'like', '%' . $query . '%')->limit(10)->get(['id', 'nama_guru', 'nip']);
+        return response()->json([
+            'status'  => true,
+            'message' => 'Pencarian berhasil.',
+            'data'    => $guru,
         ], 200);
     }
 }

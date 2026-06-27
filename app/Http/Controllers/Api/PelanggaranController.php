@@ -220,6 +220,10 @@ class PelanggaranController extends Controller
                 'data'           => $data,
                 'tanggal_mulai'  => $request->tanggal_mulai,
                 'tanggal_sampai' => $request->tanggal_sampai,
+                'kepalaMadrasah' => 'NOPRIZAL, M. Pd',
+                'nipKepala'      => '197711092006041006',
+                'wakaKurikulum'  => 'RIZA PUSPITA SARI, S. Pd',
+                'nipWaka'        => '197607142006042019',
             ]
         )->render();
 

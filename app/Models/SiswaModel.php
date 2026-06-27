@@ -1,12 +1,11 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class SiswaModel extends Model
 {
-    protected $table = "siswa";
+    protected $table    = "siswa";
     protected $fillable = [
         'id_user',
         'nama_siswa',
@@ -20,6 +19,10 @@ class SiswaModel extends Model
     public function kelas()
     {
         return $this->belongsTo(KelasModel::class, 'id_kelas');
+    }
+    public function rekapPiket()
+    {
+        return $this->morphMany(RekapPiket::class, 'piket');
     }
     public $timestamps = true;
 }

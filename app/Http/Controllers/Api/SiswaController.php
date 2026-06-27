@@ -87,7 +87,7 @@ class SiswaController extends Controller
     public function search(Request $request)
     {
         $query = $request->q;
-        $siswa = SiswaModel::where('nama_siswa', 'like', '%' . $query . '%')->limit(10)->get(['id', 'nama_siswa', 'nisn']);
+        $siswa = SiswaModel::with('kelas')->where('nama_siswa', 'like', '%' . $query . '%')->limit(10)->get(['id', 'nama_siswa', 'nisn','id_kelas']);
         return response()->json([
             'status'  => true,
             'message' => 'Pencarian berhasil.',

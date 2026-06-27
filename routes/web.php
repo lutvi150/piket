@@ -13,11 +13,14 @@ use App\Http\Controllers\PiketController;
 use App\Http\Controllers\RekapPiketController;
 use App\Http\Controllers\ReportPdf;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\AbsenGuruController;
+use App\Http\Controllers\AbsenSiswaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
 Route::get('/', function () {
     $session = session()->get('data.role');
+    // return response()->json($session);
     // if(is_array($session) && in_array('admin',$session)){
     if (is_array($session)) {
         return redirect()->to('admin');
@@ -121,5 +124,8 @@ Route::prefix('pelanggaran')->group(function () {
     Route::get('/', [PelanggaranController::class, 'index'])->name('pelanggaran');
 });
 Route::prefix('absensi-siswa')->group(function(){
-    Route::get('/,');
+    Route::get('/',[AbsenSiswaController::class,'index'])->name('absensi-siswa');
+});
+Route::prefix('absensi-guru')->group(function(){
+    Route::get('/',[AbsenGuruController::class,'index'])->name('absensi-guru');
 });
