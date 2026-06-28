@@ -43,6 +43,10 @@
 
 <script>
     const BASE_URL = "{{ url('/') }}";
+    window.APP = {
+        user: @json(session('data')),
+        baseUrl: @json(url('/'))
+    };
     // use for error
     error_function = (xhr) => {
         {

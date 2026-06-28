@@ -43,7 +43,7 @@
                                         <th>Menu</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="table-absen">
                                     <tr>
                                         <td></td>
                                         <td></td>
@@ -100,23 +100,23 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Mata Pelajarasan</label>
-                                <select name="mapel" class="form-control" id="mapel"></select>
-                                <small id="helpId" class="text-muted text-error e-mapel">Help text</small>
+                                <select name="id_mapel" class="form-control" id="mapel"></select>
+                                <small id="helpId" class="text-muted text-error e-id_mapel">Help text</small>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Kelas</label>
-                                <select name="kelas" class="form-control" id="kelas"></select>
-                                <small id="helpId" class="text-muted text-error e-kelas">Help text</small>
+                                <select name="id_kelas" class="form-control" id="kelas"></select>
+                                <small id="helpId" class="text-muted text-error e-id_kelas">Help text</small>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary store-button">Simpan</button>
+                    <button type="button" class="btn btn-primary store-button" onclick="store_data()">Simpan</button>
                 </div>
             </div>
         </div>
@@ -141,7 +141,7 @@
     </script>
     <script>
         $(function() {
-            // get_data();
+            get_data();
             getKelas();
             getMapel();
         });
@@ -149,7 +149,7 @@
         showModalAbsen = () => {
             sessionStorage.setItem('TY', 'POST');
             form[0].reset();
-            form.attr('action', `${BASE_URL}/api/absen-siswa`);
+            form.attr('action', `${BASE_URL}/absensi-siswa`);
             $('.text-error').text('');
             $('.modal-title').text(`Buat Absen Baru`);
             $("#buat-absen").modal("show");
@@ -172,18 +172,18 @@
                 $("#kelas").html(option);
             } catch (error) {
                 console.log(error);
-                
+
             }
         }
-        conts getMapel=async ()=>{
+        const getMapel = async () => {
             try {
-                const response= await fetch(`${BASE_URL}/api/mapel`);
+                const response = await fetch(`${BASE_URL}/api/mapel`);
                 if (!response) {
                     throw new Error("Gagal mengambil data mapel");
                 }
                 const mapel = await response.json();
                 let option = '<option value="">Pilih Mata Pelajaran</option>';
-                mapel.forEach(item => {
+                mapel.data.forEach(item => {
                     option += `
                 <option value="${item.id}">
                     ${item.nama_mapel}
@@ -193,7 +193,7 @@
                 $("#mapel").html(option);
             } catch (error) {
                 console.log(error);
-                
+
             }
         }
         store_data = () => {
@@ -213,11 +213,11 @@
                     $(".store-button").removeAttr('disabled').text(sessionStorage.getItem('TY') == 'POST' ?
                         'Simpan' : 'Update');
                     if (response.status == true) {
-                        get_data(jenis);
+                        get_data();
                         setTimeout(() => {
                             Notiflix.Report.success(
                                 `Berhasil`,
-                                `Data Piket Berhasil Dicatat`,
+                                `Data Absen Berhasil Disimpan`,
                                 `Okay`,
                             );
                             form[0].reset();
@@ -227,8 +227,8 @@
                             $(`.e-${key}`).text(value[0]);
                         });
                         Notiflix.Report.failure(
-                            `Kesalahan`,
-                            `Data Piket Gagal Disimpan`,
+                            `Gagal`,
+                            `Data Absen Gagal Disimpan`,
                             `Okay`,
                         );
                     }
@@ -240,73 +240,59 @@
                 }
             }).submit();
         }
-
-        get_data = () => {
-            let tanggal_piket = $("#tanggal_piket").val();
-            $.ajax({
-                type: "GET",
-                url: `${BASE_URL}/api/rekap-piket`,
-                data: {
-                    tanggal: tanggal_piket,
-                    jenis: jenis,
-                },
-                dataType: "JSON",
-                success: function(response) {
-                    if (jenis === 'siswa') {
-                        show_data_siswa(response.data);
-                    } else {
-                        show_data_guru(response.data);
-                    }
-                },
-                error: function(xhr) {
-                    handleAjaxError(xhr);
+        const get_data = async () => {
+            try {
+                const response = await fetch(`${BASE_URL}/absensi-siswa-api`);
+                if (!response.ok) {
+                    throw new Error("Gagal mengambil data");
                 }
-            });
-        }
+                const result = await response.json();
+                let html = '';
+                result.data.forEach((item, index) => {
+                    html += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.tanggal}</td>
+                        <td>${item.jam_masuk} - ${item.jam_keluar}</td>
+                        <td>${item.kelas.nama_kelas}| <label class="label label-success">${item.jumlah_siswa} orang</label></td>
+                        <td>${item.mapel.nama_mapel}</td>
+                        <td>
+                            <a href="{{ ('absensi-siswa/start-absen/${item.id}') }}"  class="btn btn-danger btn-xs"><i class="fa fa-eye"></i>Mulai Absen</a>
+                            <a href="#" onclick="edit_data(${item.id})" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                            <a href="#" onclick="delete_data(${item.id})" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i>Hapus</a>
+                        </td>`
+                });
+                document.getElementById('table-absen').innerHTML = html;
+            } catch (error) {
+                console.log(error);
+                handleAjaxError(error);
+            }
+        };
 
-
-        edit_data = (id) => {
-            sessionStorage.setItem('TY', 'PUT');
-            $.ajax({
-                type: "GET",
-                url: `${BASE_URL}/api/rekap-piket/${id}`,
-                dataType: "JSON",
-                success: function(response) {
-                    const data = response.data;
-                    const jenis = data.piket_type.includes("Siswa") ?
-                        "siswa" :
-                        "guru";
-
-                    const form = jenis === "siswa" ?
-                        $("#form-siswa") :
-                        $("#form-guru");
-                    form[0].reset();
-                    form.attr("action", `${BASE_URL}/api/rekap-piket/${id}`);
-                    form.find("[name=nama_siswa]").val(data.piket?.nama_siswa ?? '-');
-                    form.find("[name=nisn]").val(data.piket?.nisn ?? '-');
-                    form.find("[name=kelas]").val(data.kelas?.nama_kelas ?? '-');
-                    form.find("[name=piket_id]").val(data.piket_id).trigger("change");
-                    form.find("[name=id_kelas]").val(data.kelas_id).trigger("change");
-                    form.find("[name=id_mapel]").val(data.mapel_id).trigger("change");
-                    form.find("[name=status]").val(data.status);
-                    form.find("[name=terlambat]").val(data.terlambat);
-                    form.find("[name=keterangan]").val(data.keterangan);
-                    $(".text-error").text("");
-                    $(".modal-add-title").text(`Edit ${jenis}`);
-                    if (jenis === "siswa") {
-                        $(".cari-siswa").attr("hidden", true);
-                        $("#modalAddSiswa").modal("show");
-                    } else {
-                        $("#modalAddGuru").modal("show");
-                    }
-                    get_data(jenis);
-
-                },
-                error: function(xhr) {
-                    handleAjaxError(xhr);
+        const edit_data = async (id) => {
+            try {
+                sessionStorage.setItem('TY', 'PUT');
+                const response = await fetch(`${BASE_URL}/api/absensi-siswa/${id}`);
+                if (!response.ok) {
+                    throw new Error("Gagal mengambil data");
                 }
-            });
-        }
+                const result = await response.json();
+                const data = result.data;
+                form.attr("action", `${BASE_URL}/api/absensi-siswa/${id}`);
+                $(".modal-title").text("Edit Absen");
+                $(".text-error").text("");
+                $("#tanggal").val(data.tanggal);
+                $("#masuk").val(data.jam_masuk);
+                $("#keluar").val(data.jam_keluar);
+                $("#kelas").val(data.id_kelas).trigger("change");
+                $("#mapel").val(data.id_mapel).trigger("change");
+                $("#buat-absen").modal("show");
+            } catch (error) {
+                console.error(error);
+                handleAjaxError(error);
+
+            }
+        };
 
         delete_data = (id) => {
             Notiflix.Confirm.show(
@@ -320,18 +306,18 @@
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
-                        url: `${BASE_URL}/api/rekap-piket/${id}`,
+                        url: `${BASE_URL}/api/absensi-siswa/${id}`,
                         success: function(response) {
                             if (response.status == true) {
                                 Notiflix.Report.success(
-                                    `Data Piket Berhasil Dihapus`,
+                                    `Data Absen Berhasil Dihapus`,
                                     `Okay`,
                                 );
-                                get_data(response.data.jenis)
+                                get_data()
                             } else {
                                 Notiflix.Report.failure(
                                     `Gagal`,
-                                    `Data  Gagal Dihapus`,
+                                    `Data  Absen Gagal Dihapus`,
                                     `Okay`,
                                 );
                             }

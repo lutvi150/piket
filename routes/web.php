@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\AbsenController;
+use App\Http\Controllers\AbsenGuruController;
+use App\Http\Controllers\AbsenSiswaController;
+use App\Http\Controllers\Api\AbsenSiswaController as ApiAbsenSiswaController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CheckAbsensiController;
@@ -13,8 +16,6 @@ use App\Http\Controllers\PiketController;
 use App\Http\Controllers\RekapPiketController;
 use App\Http\Controllers\ReportPdf;
 use App\Http\Controllers\SiswaController;
-use App\Http\Controllers\AbsenGuruController;
-use App\Http\Controllers\AbsenSiswaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -48,13 +49,13 @@ Route::prefix('admin')->group(function () {
     Route::get('kelas/kelas-delete/{id}', [KelasController::class, 'destroy'])->name('kelas-delete');
 
     // attendance
-    Route::post('absensi/buat-absensi', [GuruController::class, 'storeAttendance'])->name('admin-absensi-add');
-    Route::get('absensi/check-absensi/{id_kelas}/{id_absen}', [CheckAbsensiController::class, 'index'])->name('guru-check-absensi');
-    Route::delete('absensi/{absenModel}', [AbsenController::class, 'destroy'])->name('absen.destroy');
+    // Route::post('absensi/buat-absensi', [GuruController::class, 'storeAttendance'])->name('admin-absensi-add');
+    // Route::get('absensi/check-absensi/{id_kelas}/{id_absen}', [CheckAbsensiController::class, 'index'])->name('guru-check-absensi');
+    // Route::delete('absensi/{absenModel}', [AbsenController::class, 'destroy'])->name('absen.destroy');
     // report
-    Route::get('absensi/laporan-bulanan/{bulan}/{tahun}/{id_kelas}', [ReportPdf::class, 'reportAbsen'])->name('guru-report-absensi');
+    // Route::get('absensi/laporan-bulanan/{bulan}/{tahun}/{id_kelas}', [ReportPdf::class, 'reportAbsen'])->name('guru-report-absensi');
     // Route::get('absensi/laporan-bulanan', [ReportPdf::class, 'reportAbsen'])->name('admin-absensi');
-    Route::get('absensi', [GuruController::class, 'absensi'])->name('admin-absensi');
+    // Route::get('absensi', [GuruController::class, 'absensi'])->name('admin-absensi');
 });
 // guru route
 // Route::prefix('guru')->group(function () {
@@ -123,9 +124,15 @@ Route::prefix('kelas')->group(function () {
 Route::prefix('pelanggaran')->group(function () {
     Route::get('/', [PelanggaranController::class, 'index'])->name('pelanggaran');
 });
-Route::prefix('absensi-siswa')->group(function(){
-    Route::get('/',[AbsenSiswaController::class,'index'])->name('absensi-siswa');
+Route::prefix('absensi-siswa')->group(function () {
+    Route::get('/', [AbsenSiswaController::class, 'index'])->name('absensi-siswa');
+    Route::get('/start-absen/{id_absen}',[AbsenSiswaController::class, 'startAbsen']);
+    Route::post('/', [AbsenSiswaController::class, 'store']);
 });
-Route::prefix('absensi-guru')->group(function(){
-    Route::get('/',[AbsenGuruController::class,'index'])->name('absensi-guru');
+Route::prefix('absensi-siswa-api')->group(function () {
+    Route::get('/', [ApiAbsenSiswaController::class, 'index'])->name('absensi-siswa-api');
+});
+Route::prefix('absensi-guru')->group(function () {
+    Route::get('/', [AbsenGuruController::class, 'index'])->name('absensi-guru');
+
 });
