@@ -24,5 +24,9 @@ class SiswaModel extends Model
     {
         return $this->morphMany(RekapPiket::class, 'piket');
     }
+    public function absensi()
+    {
+        return $this->hasMany(Absensi::class, 'id_siswa');
+    }
     public $timestamps = true;
 }

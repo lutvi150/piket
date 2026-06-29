@@ -58,8 +58,9 @@
                                         <th>Nama Guru</th>
                                         <th>Mapel</th>
                                         <th>Kelas</th>
+                                        <th>Jam Ke-</th>
                                         <th>Terlambat</th>
-                                        <th>Status</th>
+                                        <th>Tidak Hadir (Sakit,Izin,Alpa)</th>
                                         <th>Keterangan</th>
                                         <th>Menu</th>
                                     </tr>
@@ -73,10 +74,10 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Nama Siswa</th>
-                                        <th>Status</th>
+                                        <th>Status (Sakit,Izin,Alpa,Terlambat)</th>
                                         <th>Kelas</th>
                                         <th>Mapel</th>
-                                        <th>Jam</th>
+                                        <th>Jam Ke-</th>
                                         <th>Keterangan</th>
                                         <th>Menu</th>
                                     </tr>
@@ -449,8 +450,9 @@
                     <td>${item.piket?.nama_guru ?? '-'}</td>
                     <td>${item.mapel?.nama_mapel ?? '-'}</td>
                     <td>${item.kelas?.nama_kelas ?? '-'}</td>
-                    <td>${badgeStatus}</td>
                     <td>${item.jam ?? '-'}</td>
+                    <td>${item.jam ?? '-'}</td>
+                    <td>${badgeStatus}</td>
                     <td>${item.keterangan ?? '-'}</td>
                             <td>
                                 <button class="btn btn-warning btn-xs" onclick="edit_data(${item.id})">

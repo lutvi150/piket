@@ -90,6 +90,9 @@ Route::prefix('rekap-piket')->group(function(){
 });
 Route::prefix('absensi-siswa')->group(function(){
     Route::get('/', [AbsenSiswaController::class, 'index']);
+    Route::get('/check-absen/{id}',[AbsenSiswaController::class, 'checkAbsen']); 
+    Route::get('/cetak-pdf/{id}',[AbsenSiswaController::class, 'cetakAbsen']);    
+    Route::post('/check-absen',[AbsenSiswaController::class, 'storeAbsen']);
     Route::post('/', [AbsenSiswaController::class, 'store']);
     Route::get('/{id}', [AbsenSiswaController::class, 'show']);
     Route::put('/{id}', [AbsenSiswaController::class, 'update']);

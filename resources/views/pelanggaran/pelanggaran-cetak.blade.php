@@ -112,7 +112,8 @@
 
             <td style="width:50%; border:none; text-align:center;">
                 Padang,
-                {{ \Carbon\Carbon::parse($tanggal)->translatedFormat('d F Y') }}
+                {{-- {{ \Carbon\Carbon::parse()->translatedFormat('d F Y') }} --}}
+                {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
             </td>
         </tr>
 
@@ -123,7 +124,7 @@
             </td>
 
             <td style="width:50%; border:none; text-align:center;">
-                Wakil Kurikulum<br>
+                Wakil Kesiswaan<br>
             </td>
         </tr>
 
