@@ -27,21 +27,24 @@
                         </div><!-- /.box-header -->
                         <div class="box-body">
                             <div class="col-md-12 table-pelanggaran">
-
-                                <div class="alert alert-danger" role="alert">
-                                    <strong>Notifikasi!</strong>
-                                    <ul>
-                                        <li>Untuk mempercapat Absen dapat menggunakan tombol <button type="button"
-                                                onclick="makeAllAbsensi()" class=" btn btn-success btn-sm"><i
-                                                    class="fa fa-check"></i> Hadir Semua</button> </li>
-                                    </ul>
-                                </div>
+                                @if (auth()->user()->hasRole(['admin', 'guru_mapel']))
+                                    <div class="alert alert-danger" role="alert">
+                                        <strong>Notifikasi!</strong>
+                                        <ul>
+                                            <li>Untuk mempercapat Absen dapat menggunakan tombol <button type="button"
+                                                    onclick="makeAllAbsensi()" class=" btn btn-success btn-sm"><i
+                                                        class="fa fa-check"></i> Hadir Semua</button> </li>
+                                        </ul>
+                                    </div>
+                                @endif
                                 <!-- Tabel -->
                                 <div class="table-responsive">
                                     <a href="{{ url('absensi-siswa') }}" class="btn btn-danger btn-sm"><i
                                             class="fa fa-reply"></i> Kembali</a>
-                                    <button type="button" class="btn btn-success btn-sm" onclick="makeAllAbsensi()"><i
-                                            class="fa fa-check"></i> Hadir Semua</button>
+                                    @if (auth()->user()->hasRole(['admin', 'guru_mapel']))
+                                        <button type="button" class="btn btn-success btn-sm" onclick="makeAllAbsensi()"><i
+                                                class="fa fa-check"></i> Hadir Semua</button>
+                                    @endif
                                     <!-- Toolbar -->
                                     <div class="row mb-3">
                                         <div class="col-md-3">
@@ -93,11 +96,13 @@
         });
     </script>
     <script>
+        const roles = @json(session('data.role'));
         $(document).ready(function() {
             get_data();
         });
 
         get_data = () => {
+            const isGuruMapel = roles.includes('guru_mapel');
             const id = window.location.pathname.split('/').pop();
             $.ajax({
                 type: "GET",
@@ -141,7 +146,7 @@
                             <td>${item.status}</td>
                             <td>${item.keterangan ?? '-'}</td>
                             <td>
-                            ${tombol}
+                                ${isGuruMapel ? tombol : ''}
                             ${lampiran}
                             </td>
                         </tr>`;

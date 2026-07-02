@@ -22,13 +22,18 @@
                         <div class="box-header">
                             <h3 class="box-title">Data Absen</h3>
                             <div style="margin-top:10px">
-                                <div class="alert alert-info" role="alert">
-                                    <ol>
-                                        <li>Untuk menambahkan absen, silakan klik tombol "Buat Absen".</li>
-                                    </ol>
-                                </div>
-                                <button type="button" class="btn btn-success btm-sm" onclick="showModalAbsen()"><i
-                                        class="fa fa-plus"></i> Buah Absen</button>
+
+                                @if (auth()->user()->hasRole(['admin', 'guru_mapel']))
+                                    <div class="alert alert-info" role="alert">
+                                        <ol>
+                                            <li>Untuk menambahkan absen, silakan klik tombol "Buat Absen".</li>
+                                        </ol>
+                                    </div>
+                                @endif
+                                @if (auth()->user()->hasRole(['admin', 'guru_mapel']))
+                                    <button type="button" class="btn btn-success btm-sm" onclick="showModalAbsen()"><i
+                                            class="fa fa-plus"></i> Buat Absen</button>
+                                @endif
                             </div>
                         </div><!-- /.box-header -->
                         <div class="box-body">
@@ -36,6 +41,9 @@
                                 <thead>
                                     <tr>
                                         <th>No.</th>
+                                        @if (auth()->user()->hasRole(['admin', 'guru_bk', 'wali_kelas']))
+                                            <th>Nama Guru</th>
+                                        @endif
                                         <th>Tanggal</th>
                                         <th>Jam Mengajar</th>
                                         <th>Kelas</th>
@@ -44,14 +52,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="table-absen">
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
+                                   
                                 </tbody>
                             </table>
                         </div><!-- /.box-body -->
@@ -139,7 +140,9 @@
             });
         });
     </script>
+
     <script>
+        const roles = @json(session('data.role'));
         $(function() {
             get_data();
             getKelas();
@@ -241,6 +244,8 @@
             }).submit();
         }
         const get_data = async () => {
+            const showGuru = roles.some(role => ['admin', 'guru_bk', 'wali_kelas'].includes(role));
+            const isGuruMapel = roles.includes('guru_mapel');
             try {
                 const response = await fetch(`${BASE_URL}/absensi-siswa-api`);
                 if (!response.ok) {
@@ -249,18 +254,22 @@
                 const result = await response.json();
                 let html = '';
                 result.data.forEach((item, index) => {
+
                     html += `
                     <tr>
                         <td>${index + 1}</td>
+                        ${showGuru ? `<td>${item.nama_guru ?? '-'}</td>` : ''}
                         <td>${item.tanggal}</td>
                         <td>${item.jam_masuk} - ${item.jam_keluar}</td>
                         <td>${item.kelas.nama_kelas}| <label class="label label-success">${item.jumlah_siswa} orang</label></td>
                         <td>${item.mapel.nama_mapel}</td>
                         <td>
-                            <a href="{{ ('absensi-siswa/start-absen/${item.id}') }}"  class="btn btn-danger btn-xs"><i class="fa fa-eye"></i>Mulai Absen</a>
+                            <a href="${BASE_URL}/absensi-siswa/start-absen/${item.id}"  class="btn btn-danger btn-xs"><i class="fa fa-eye"></i> ${isGuruMapel ? 'Mulai Absen' : 'Check Absen'}</a>
+                               ${isGuruMapel ? `
                             <a href="#" onclick="edit_data(${item.id})" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
-                            <a href="#" onclick="delete_data(${item.id})" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i>Hapus</a>
-                        </td>`
+                            <a href="#" onclick="delete_data(${item.id})" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i>Hapus</a>`:''}
+                        </td>
+                        </tr>`
                 });
                 document.getElementById('table-absen').innerHTML = html;
             } catch (error) {

@@ -25,8 +25,13 @@ class AbsenSiswaController extends Controller
                 'kelas',
                 'mapel',
             ]);
-            if (session('data.role') != 'admin') {
-                $query->where('id_guru', session('data.id'));
+            $roles = session('data.role', []);
+            if (! empty(array_intersect($roles, ['admin', 'guru_bk', 'wali_kelas']))) {
+                $query->leftJoin('guru', 'guru.id', '=', 'absensi.id_guru')
+                    ->select('absensi.*', 'guru.nama_guru');
+            }
+            if (in_array('guru', $roles)) {
+                $query->where('absensi.id_guru', session('data.id'));
             }
             $absen = $query
                 ->latest('tanggal')

@@ -114,7 +114,7 @@
             </td>
 
             <td style="width:50%; border:none; text-align:center;">
-                Wakil Kurikulum<br>
+                Wali Kelas<br>
             </td>
         </tr>
 
