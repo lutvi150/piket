@@ -59,7 +59,7 @@
                                         <th>Mapel</th>
                                         <th>Kelas</th>
                                         <th>Jam Ke-</th>
-                                        <th>Terlambat</th>
+                                        {{-- <th>Terlambat</th> --}}
                                         <th>Tidak Hadir (Sakit,Izin,Alpa)</th>
                                         <th>Keterangan</th>
                                         <th>Menu</th>
@@ -136,6 +136,12 @@
                                 @endforeach
                             </select>
                             <small id="helpId" class="text-muted text-error e-id_mapel"></small>
+                        </div>
+                        <div class="form-group jam-ke">
+                            <label for="">Jam Ke</label>
+                            <input type="number" name="jam_ke" id="jam_ke" class="form-control"
+                                placeholder="Jam ke" aria-describedby="helpId">
+                            <small id="helpId" class="text-muted text-error e-jam_ke"></small>
                         </div>
                         <div class="form-group">
                             <label for="">Status</label>
@@ -214,12 +220,19 @@
                             </select>
                             <small id="helpId" class="text-muted text-error"></small>
                         </div>
+                        <div class="form-group jam-ke">
+                            <label for="">Jam Ke</label>
+                            <input type="number" name="jam_ke" id="jam_ke" class="form-control"
+                                placeholder="Jam ke" aria-describedby="helpId">
+                            <small id="helpId" class="text-muted text-error e-jam_ke"></small>
+                        </div>
                         <div class="form-group">
                             <label for="">Status</label>
                             <select name="status" class="form-control" id="status">
                                 <option value="">-- Pilih Status --</option>
                                 <option value="S">Sakit</option>
                                 <option value="I">Izin</option>
+                                <option value="T">Terlambat</option>
                                 <option value="A">Alfa</option>
                             </select>
                             <small id="helpId" class="text-muted text-error e-status"></small>
@@ -450,8 +463,7 @@
                     <td>${item.piket?.nama_guru ?? '-'}</td>
                     <td>${item.mapel?.nama_mapel ?? '-'}</td>
                     <td>${item.kelas?.nama_kelas ?? '-'}</td>
-                    <td>${item.jam ?? '-'}</td>
-                    <td>${item.jam ?? '-'}</td>
+                    <td>${item.jam_ke ?? '-'}</td>
                     <td>${badgeStatus}</td>
                     <td>${item.keterangan ?? '-'}</td>
                             <td>
@@ -480,7 +492,8 @@
                     H: '<span class="label label-success">Hadir</span>',
                     I: '<span class="label label-warning">Izin</span>',
                     S: '<span class="label label-info">Sakit</span>',
-                    A: '<span class="label label-danger">Alpha</span>'
+                    A: '<span class="label label-danger">Alpha</span>',
+                    T:'<span class="label label-primary">Terlambat</span>'
                 };
 
                 const badgeStatus = statusMap[item.status] ||
@@ -491,7 +504,7 @@
                     <td>${badgeStatus}</td>
                     <td>${item.kelas?.nama_kelas ?? '-'}</td>
                     <td>${item.mapel?.nama_mapel ?? '-'}</td>
-                    <td>${item.jam ?? '-'}</td>
+                    <td>${item.jam_ke ?? '-'}</td>
                     <td>${item.keterangan ?? '-'}</td>
                             <td>
                                 <button class="btn btn-warning btn-xs" onclick="edit_data(${item.id})">
@@ -594,6 +607,7 @@
                     form.find("[name=piket_id]").val(data.piket_id).trigger("change");
                     form.find("[name=id_kelas]").val(data.kelas_id).trigger("change");
                     form.find("[name=id_mapel]").val(data.mapel_id).trigger("change");
+                    form.find("[name=jam_ke]").val(data.jam_ke);
                     form.find("[name=status]").val(data.status);
                     form.find("[name=terlambat]").val(data.terlambat);
                     form.find("[name=keterangan]").val(data.keterangan);

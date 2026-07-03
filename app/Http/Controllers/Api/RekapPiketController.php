@@ -84,6 +84,7 @@ class RekapPiketController extends Controller
             'kelas_id'   => $data['id_kelas'] ?? null,
             'mapel_id'   => $data['id_mapel'] ?? null,
             'terlambat'  => $data['terlambat'] ?? 0,
+            'jam_ke'     => $data['jam_ke'] ?? null,
             'status'     => $data['status'],
             'keterangan' => $data['keterangan'] ?? null,
             'lampiran'   => $filename ?? null,
@@ -159,8 +160,9 @@ class RekapPiketController extends Controller
         $rekapPiket->update([
             'tanggal'    => $data['tanggal'] ?? $rekapPiket->tanggal,
             'kelas_id'   => $data['id_kelas'] ?? $rekapPiket->kelas_id,
-            'mapel_id'   => $data['id_kelas'] ?? $rekapPiket->mapel_id,
+            'mapel_id'   => $data['id_mapel'] ?? $rekapPiket->mapel_id,
             'terlambat'  => $data['terlambat'] ?? $rekapPiket->terlambat,
+            'jam_ke'     => $data['jam_ke'] ?? $rekapPiket->jam_ke,
             'status'     => $data['status'] ?? $rekapPiket->status,
             'keterangan' => $data['keterangan'] ?? $rekapPiket->keterangan,
             'lampiran'   => $rekapPiket->lampiran,
@@ -244,7 +246,7 @@ class RekapPiketController extends Controller
 
             'guru'           => $dataGuru,
             'siswa'          => $dataSiswa,
-            'guru_piket'=>$guruPiket,
+            'guru_piket'     => $guruPiket,
             'kepalaMadrasah' => 'NOPRIZAL, M. Pd',
             'nipKepala'      => '197711092006041006',
             'wakaKurikulum'  => 'RIZA PUSPITA SARI, S. Pd',

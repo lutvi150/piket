@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('mapel_id')->nullable()->constrained('mapel');
             $table->morphs('piket');
             $table->unsignedInteger('terlambat')->default(0);
+            $table->integer('jam_ke');
             $table->enum("status", ["S", "I", "A"]);
             $table->text('keterangan')->nullable();
             $table->string('lampiran')->nullable();

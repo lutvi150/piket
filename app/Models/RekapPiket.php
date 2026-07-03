@@ -14,6 +14,7 @@ class RekapPiket extends Model
         'piket_id',
         'piket_type',
         'terlambat',
+        'jam_ke',
         'status',
         'keterangan',
         'lampiran',

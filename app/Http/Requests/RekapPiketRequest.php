@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -26,9 +25,10 @@ class RekapPiketRequest extends FormRequest
             'id_kelas'   => 'nullable|exists:kelas,id',
             'id_mapel'   => 'nullable|exists:mapel,id',
             'terlambat'  => 'nullable|integer|min:0',
-            'status'     => 'required|in:S,I,A',
+            'jam_ke'     => 'required|integer|min:1',
+            'status'     => 'required|in:S,I,A,T',
             'keterangan' => 'nullable|string|max:1000',
-            'lampiran'=>'nullable|file|mimes:pdf|max:2048'
+            'lampiran'   => 'nullable|file|mimes:pdf|max:2048',
         ];
     }
 
@@ -38,22 +38,25 @@ class RekapPiketRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'tanggal.required'    => 'Tanggal wajib diisi.',
-            'tanggal.date'        => 'Format tanggal tidak valid.',
-            'jenis.required'      => 'Jenis piket wajib dipilih.',
-            'jenis.in'            => 'Jenis piket harus guru atau siswa.',
-            'piket_id.required'   => 'Data guru atau siswa wajib dipilih.',
-            'piket_id.integer'    => 'Data guru atau siswa tidak valid.',
-            'id_kelas.exists'     => 'Data kelas tidak ditemukan.',
-            'id_mapel.exists'     => 'Data mata pelajaran tidak ditemukan.',
-            'terlambat.integer'   => 'Jumlah keterlambatan harus berupa angka.',
-            'terlambat.min'       => 'Jumlah keterlambatan tidak boleh kurang dari 0.',
-            'status.required'     => 'Status kehadiran wajib dipilih.',
-            'status.in'           => 'Status kehadiran harus S, I, atau A.',
-            'keterangan.string'   => 'Keterangan harus berupa teks.',
-            'keterangan.max'      => 'Keterangan maksimal 1000 karakter.',
-            'lampiran.file'=> 'Lampiran harus berupa file PDF.',
-            'lampiran.mimes'   => 'Lampiran harus berupa file PDF.',
+            'tanggal.required'  => 'Tanggal wajib diisi.',
+            'tanggal.date'      => 'Format tanggal tidak valid.',
+            'jenis.required'    => 'Jenis piket wajib dipilih.',
+            'jenis.in'          => 'Jenis piket harus guru atau siswa.',
+            'piket_id.required' => 'Data guru atau siswa wajib dipilih.',
+            'piket_id.integer'  => 'Data guru atau siswa tidak valid.',
+            'id_kelas.exists'   => 'Data kelas tidak ditemukan.',
+            'id_mapel.exists'   => 'Data mata pelajaran tidak ditemukan.',
+            'terlambat.integer' => 'Jumlah keterlambatan harus berupa angka.',
+            'terlambat.min'     => 'Jumlah keterlambatan tidak boleh kurang dari 0.',
+            'jam_ke.required'   => 'Jam ke wajib diisi.',
+            'jam_ke.integer'    => 'Jam ke harus berupa angka.',
+            'jam_ke.min'        => 'Jam ke tidak boleh kurang dari 1.',
+            'status.required'   => 'Status kehadiran wajib dipilih.',
+            'status.in'         => 'Status kehadiran harus S, I, atau A.',
+            'keterangan.string' => 'Keterangan harus berupa teks.',
+            'keterangan.max'    => 'Keterangan maksimal 1000 karakter.',
+            'lampiran.file'     => 'Lampiran harus berupa file PDF.',
+            'lampiran.mimes'    => 'Lampiran harus berupa file PDF.',
             'lampiran.max'      => 'Lampiran maksimal 2 MB.',
         ];
     }
@@ -71,6 +74,7 @@ class RekapPiketRequest extends FormRequest
             'mapel_id'   => 'mata pelajaran',
             'terlambat'  => 'keterlambatan',
             'status'     => 'status kehadiran',
+            'jam_ke'     => 'jam ke',
             'keterangan' => 'keterangan',
         ];
     }
