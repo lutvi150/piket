@@ -119,7 +119,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">Kelas</label>
-                            <select name="id_kelas_guru" id="id_kelas_guru" class="form-control">
+                            <select name="id_kelas" id="id_kelas" class="form-control">
                                 <option value="">-- Pilih Kelas --</option>
                                 @foreach ($kelas as $k)
                                     <option value="{{ $k->id }}">{{ $k->nama_kelas }}</option>
@@ -139,7 +139,7 @@
                         </div>
                         <div class="form-group jam-ke">
                             <label for="">Jam Ke</label>
-                            <input type="number" name="jam_ke" id="jam_ke" class="form-control"
+                            <input type="text" name="jam_ke" id="jam_ke" class="form-control"
                                 placeholder="Jam ke" aria-describedby="helpId">
                             <small id="helpId" class="text-muted text-error e-jam_ke"></small>
                         </div>
@@ -222,7 +222,7 @@
                         </div>
                         <div class="form-group jam-ke">
                             <label for="">Jam Ke</label>
-                            <input type="number" name="jam_ke" id="jam_ke" class="form-control"
+                            <input type="text" name="jam_ke" id="jam_ke" class="form-control"
                                 placeholder="Jam ke" aria-describedby="helpId">
                             <small id="helpId" class="text-muted text-error e-jam_ke"></small>
                         </div>
@@ -581,6 +581,7 @@
                 $(".cari-siswa").removeAttr("hidden");
                 $('#modalAddSiswa').modal('show');
             } else {
+                $(".cari-guru").removeAttr("hidden");
                 $('#modalAddGuru').modal('show');
             }
         }
@@ -602,6 +603,7 @@
                     form[0].reset();
                     form.attr("action", `${BASE_URL}/api/rekap-piket/${id}`);
                     form.find("[name=nama_siswa]").val(data.piket?.nama_siswa ?? '-');
+                    form.find("[name=nama_guru]").val(data.piket?.nama_guru ?? '-');
                     form.find("[name=nisn]").val(data.piket?.nisn ?? '-');
                     form.find("[name=kelas]").val(data.kelas?.nama_kelas ?? '-');
                     form.find("[name=piket_id]").val(data.piket_id).trigger("change");
@@ -617,6 +619,7 @@
                         $(".cari-siswa").attr("hidden", true);
                         $("#modalAddSiswa").modal("show");
                     } else {
+                        $(".cari-guru").attr("hidden", true);
                         $("#modalAddGuru").modal("show");
                     }
                     get_data(jenis);

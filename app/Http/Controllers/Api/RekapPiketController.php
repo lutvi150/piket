@@ -91,10 +91,9 @@ class RekapPiketController extends Controller
         ]);
 
         return response()->json([
-            'status'  => true,
-            'msg'     => 'Data rekap piket berhasil disimpan',
-            'data'    => $rekapPiket->load('piket'),
-            'data_es' => $data,
+            'status' => true,
+            'msg'    => 'Data rekap piket berhasil disimpan',
+            'data'   => $rekapPiket->load('piket'),
         ], 201);
     }
     public function show(string $id)

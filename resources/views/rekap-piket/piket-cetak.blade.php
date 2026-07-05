@@ -1,143 +1,74 @@
-```blade
 <!DOCTYPE html>
 <html>
 
 <head>
-    <meta charset="utf-8">
-
     <style>
         body {
             font-family: sans-serif;
             font-size: 11px;
-            color: #000;
-        }
-
-        .header-table {
-            width: 100%;
-            border: none;
-            border-collapse: collapse;
-            margin-bottom: 8px;
-        }
-
-        .header-table td {
-            border: none;
-            vertical-align: middle;
-        }
-
-        .title {
-            text-align: center;
-            line-height: 1.4;
-        }
-
-        .title .kementerian {
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        .title .kantor {
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .title .sekolah {
-            font-size: 17px;
-            font-weight: bold;
-        }
-
-        .title .alamat {
-            font-size: 11px;
-        }
-
-        .line {
-            border: 1px solid #000;
-            margin: 8px 0 15px;
         }
 
         h3 {
             text-align: center;
-            margin: 0 0 15px;
-            text-transform: uppercase;
         }
 
-        .info {
-            width: 100%;
-            margin-bottom: 15px;
-        }
-
-        .info td {
-            border: none;
-            padding: 2px 0;
-            vertical-align: top;
-        }
-
-        .section-title {
-            font-size: 13px;
-            font-weight: bold;
-            margin: 15px 0 8px;
-            background: #efefef;
-            padding: 6px;
-        }
-
-        table.data {
+        table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
         }
 
-        table.data th,
-        table.data td {
+        table th,
+        table td {
             border: 1px solid #000;
             padding: 5px;
         }
 
-        table.data th {
+        table th {
             text-align: center;
-            font-weight: bold;
-            background: #f5f5f5;
-        }
-
-        table.data td {
-            vertical-align: middle;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .text-right {
-            text-align: right;
         }
     </style>
 </head>
 
 <body>
+<table style="width:100%; border:none; border-collapse:collapse; margin-bottom:10px;">
+    <tr>
+        <td style="width:15%; text-align:center; border:none;">
+            <img src="{{ public_path('assets/images/logo.jpg') }}" width="100">
+        </td>
 
-    <table class="header-table">
-        <tr>
-            <td width="15%" align="center">
-                <img src="{{ public_path('assets/images/logo.jpg') }}" width="90">
-            </td>
+        <td style="width:70%; text-align:center; border:none; line-height:1.2;">
+            <div style="font-size:22px; font-weight:bold;">
+                KEMENTERIAN AGAMA REPUBLIK INDONESIA
+            </div>
 
-            <td width="70%" class="title">
-                <div class="kementerian">KEMENTERIAN AGAMA REPUBLIK INDONESIA</div>
-                <div class="kantor">KANTOR KEMENTERIAN AGAMA KOTA PADANG</div>
-                <div class="sekolah">MADRASAH TSANAWIYAH NEGERI 5 KOTA PADANG</div>
-                <div class="alamat">
-                    Jalan Raya Belimbing Kuranji (25157)<br>
-                    Telp. (0751) 4485071<br>
-                    Email : mtsn5kuranji@kemenag.go.id /
+            <div style="font-size:18px; font-weight:bold;">
+                KANTOR KEMENTERIAN AGAMA KOTA PADANG
+            </div>
+
+            <div style="font-size:17px; font-weight:bold;">
+                MADRASAH TSANAWIYAH NEGERI 5 KOTA PADANG
+            </div>
+
+            <div style="font-size:13px;">
+                Jalan Raya Belimbing Kuranji (25157) Telepon (0751) 4485071
+            </div>
+
+            <div style="font-size:13px;">
+                Email :
+                <span style="color:blue;">
+                    mtsn5kuranji@kemenag.go.id /
                     mtsn5padang@gmail.com
-                </div>
-            </td>
+                </span>
+            </div>
+        </td>
 
-            <td width="15%" align="center">
-                <img src="{{ public_path('images_sistem/logo.png') }}" width="80">
-            </td>
-        </tr>
-    </table>
+        <td style="width:15%; text-align:center; border:none;">
+            <img src="{{ public_path('images_sistem/logo.png') }}" width="85">
+        </td>
+    </tr>
+</table>
 
-    <div class="line"></div>
-
+<hr style="border:1px solid #000; margin-top:5px; margin-bottom:20px;">
     <h3>REKAPITULASI PIKET HARIAN</h3>
 
     <table class="info">

@@ -27,7 +27,7 @@ class AbsenSiswaController extends Controller
             ]);
             $roles = session('data.role', []);
             if (! empty(array_intersect($roles, ['admin', 'guru_bk', 'wali_kelas']))) {
-                $query->leftJoin('guru', 'guru.id', '=', 'absensi.id_guru')
+                $query->leftJoin('guru', 'guru.id_user', '=', 'absensi.id_guru')
                     ->select('absensi.*', 'guru.nama_guru');
             }
             if (in_array('guru', $roles)) {

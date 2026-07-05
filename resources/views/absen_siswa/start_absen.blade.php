@@ -27,7 +27,7 @@
                         </div><!-- /.box-header -->
                         <div class="box-body">
                             <div class="col-md-12 table-pelanggaran">
-                                @if (auth()->user()->hasRole(['admin', 'guru_mapel']))
+                                @if (auth()->user()->hasRole(['guru_mapel']))
                                     <div class="alert alert-danger" role="alert">
                                         <strong>Notifikasi!</strong>
                                         <ul>
@@ -41,7 +41,7 @@
                                 <div class="table-responsive">
                                     <a href="{{ url('absensi-siswa') }}" class="btn btn-danger btn-sm"><i
                                             class="fa fa-reply"></i> Kembali</a>
-                                    @if (auth()->user()->hasRole(['admin', 'guru_mapel']))
+                                    @if (auth()->user()->hasRole(['guru_mapel']))
                                         <button type="button" class="btn btn-success btn-sm" onclick="makeAllAbsensi()"><i
                                                 class="fa fa-check"></i> Hadir Semua</button>
                                     @endif
