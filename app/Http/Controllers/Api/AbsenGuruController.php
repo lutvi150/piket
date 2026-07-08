@@ -5,6 +5,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AbsenGuruRequest;
 use App\Models\AbsenGuru;
 use Illuminate\Http\Request;
+use App\Models\GuruModel as Guru;
+use App\Models\JadwalPiket;
+use App\Models\RekapPiket;
+use App\Models\SiswaModel as Siswa;
+use Illuminate\Support\Facades\DB;
 
 class AbsenGuruController extends Controller
 {
@@ -41,48 +46,85 @@ class AbsenGuruController extends Controller
     public function store(AbsenGuruRequest $request)
     {
         $today = now();
-
         $tanggal = $today->toDateString();
         $jam = $today->format('H:i:s');
 
-        $idGuru = auth()->user()->guru->id;
+        $guru = auth()->user()->guru;
 
-        $absen = AbsenGuru::where('guru_id', $idGuru)
+        if (!$guru) {
+            return response()->json([
+                'status' => false,
+                'msg' => 'Data guru tidak ditemukan.',
+                'errors' => null,
+                'data' => null,
+                'content' => null,
+            ], 404);
+        }
+
+        $absen = AbsenGuru::where('guru_id', $guru->id)
             ->whereDate('tanggal', $tanggal)
             ->first();
 
-        // Belum ada data -> Absen Masuk
+        // ==========================
+        // ABSEN MASUK
+        // ==========================
         if (!$absen) {
 
-            AbsenGuru::create([
-                'guru_id' => $idGuru,
-                'tanggal' => $tanggal,
-                'jam_masuk' => $jam,
-                'status' => 'H',
-            ]);
+            DB::transaction(function () use ($guru, $tanggal, $jam) {
+
+                AbsenGuru::create([
+                    'guru_id' => $guru->id,
+                    'tanggal' => $tanggal,
+                    'jam_masuk' => $jam,
+                    'status' => 'H',
+                ]);
+
+                $guru->rekapPiket()->firstOrCreate(
+                    [
+                        'tanggal' => $tanggal,
+                    ],
+                    [
+                        'kelas_id' => null,
+                        'mapel_id' => null,
+                        'terlambat' => 0,
+                        'jam_ke' => null,
+                        'status' => 'H',
+                        'keterangan' => 'Absen masuk melalui aplikasi',
+                        'lampiran' => null,
+                    ]
+                );
+
+            });
 
             return response()->json([
                 'status' => true,
                 'msg' => 'Absen masuk berhasil.',
                 'errors' => null,
-                'data' => null,
+                'data' => [
+                    'jam_masuk' => $jam,
+                    'jam_keluar' => null,
+                ],
                 'content' => null,
             ], 201);
         }
 
-        // Sudah pernah absen pulang
-        if ($absen->jam_keluar !== null) {
+        // ==========================
+        // SUDAH ABSEN PULANG
+        // ==========================
+        if ($absen->jam_keluar) {
 
             return response()->json([
                 'status' => false,
-                'msg' => 'Anda sudah melakukan absen masuk dan pulang hari ini.',
+                'msg' => 'Anda sudah melakukan absensi hari ini.',
                 'errors' => null,
                 'data' => null,
                 'content' => null,
             ], 422);
         }
 
-        // Absen Pulang (hanya sekali)
+        // ==========================
+        // ABSEN PULANG
+        // ==========================
         $absen->update([
             'jam_keluar' => $jam,
         ]);
@@ -91,9 +133,12 @@ class AbsenGuruController extends Controller
             'status' => true,
             'msg' => 'Absen pulang berhasil.',
             'errors' => null,
-            'data' => null,
+            'data' => [
+                'jam_masuk' => $absen->jam_masuk,
+                'jam_keluar' => $jam,
+            ],
             'content' => null,
-        ], 201);
+        ], 200);
     }
 
     /**

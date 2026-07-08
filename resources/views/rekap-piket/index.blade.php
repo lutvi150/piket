@@ -458,6 +458,20 @@
 
                 const badgeStatus = statusMap[item.status] ||
                     '<span class="label label-default">-</span>';
+                     let action = '-';
+                    if (item.status !== 'H') {
+            action = `
+                <button class="btn btn-warning btn-xs" onclick="edit_data(${item.id})">
+                    <i class="fa fa-edit"></i>
+                </button>
+
+                <button class="btn btn-danger btn-xs" onclick="delete_data(${item.id})">
+                    <i class="fa fa-trash"></i>
+                </button>
+
+                ${lampiran}
+            `;
+        }
                 html += `<tr>
                             <td>${index + 1}</td>
                     <td>${item.piket?.nama_guru ?? '-'}</td>
@@ -466,15 +480,7 @@
                     <td>${item.jam_ke ?? '-'}</td>
                     <td>${badgeStatus}</td>
                     <td>${item.keterangan ?? '-'}</td>
-                            <td>
-                                <button class="btn btn-warning btn-xs" onclick="edit_data(${item.id})">
-                                    <i class="fa fa-edit"></i>
-                                </button>
-                                <button class="btn btn-danger btn-xs" onclick="delete_data(${item.id})">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                                ${lampiran}
-                            </td>
+                    <td>${action}</td>
                         </tr>`;
             });
             $(`#show-data-guru tbody`).html(html);
