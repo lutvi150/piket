@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AbsenController;
 use App\Http\Controllers\AbsenGuruController;
+use App\Http\Controllers\Api\AbsenGuruController as ApiAbsenGuruController;
 use App\Http\Controllers\AbsenSiswaController;
 use App\Http\Controllers\Api\AbsenSiswaController as ApiAbsenSiswaController;
 use App\Http\Controllers\Admin\AdminController;
@@ -126,7 +127,7 @@ Route::prefix('pelanggaran')->group(function () {
 });
 Route::prefix('absensi-siswa')->group(function () {
     Route::get('/', [AbsenSiswaController::class, 'index'])->name('absensi-siswa');
-    Route::get('/start-absen/{id_absen}',[AbsenSiswaController::class, 'startAbsen']);
+    Route::get('/start-absen/{id_absen}', [AbsenSiswaController::class, 'startAbsen']);
     Route::post('/', [AbsenSiswaController::class, 'store']);
 });
 Route::prefix('absensi-siswa-api')->group(function () {
@@ -135,4 +136,9 @@ Route::prefix('absensi-siswa-api')->group(function () {
 Route::prefix('absensi-guru')->group(function () {
     Route::get('/', [AbsenGuruController::class, 'index'])->name('absensi-guru');
 
+});
+Route::prefix('absensi-guru-api')->group(function () {
+    Route::get('/', [ApiAbsenGuruController::class, 'index']);
+    Route::get('/check-status', [ApiAbsenGuruController::class, 'checkStatus']);
+    Route::post('/', [ApiAbsenGuruController::class, 'store']);
 });

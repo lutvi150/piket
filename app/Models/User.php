@@ -42,16 +42,20 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password'          => 'hashed',
-            'role'              => 'array',
+            'password' => 'hashed',
+            'role' => 'array',
         ];
     }
     public function hasRole($roles)
     {
         $userRoles = $this->role ?? [];
-        if (! is_array($roles)) {
+        if (!is_array($roles)) {
             $roles = [$roles];
         }
-        return ! empty(array_intersect($userRoles, $roles));
+        return !empty(array_intersect($userRoles, $roles));
+    }
+    public function guru()
+    {
+        return $this->hasOne(GuruModel::class, 'id_user');
     }
 }

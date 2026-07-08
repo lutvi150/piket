@@ -1,15 +1,16 @@
 <?php
 
+use App\Http\Controllers\Api\AbsenGuruController;
+use App\Http\Controllers\Api\AbsenSiswaController;
 use App\Http\Controllers\Api\Dashboard;
 use App\Http\Controllers\Api\GuruController;
 use App\Http\Controllers\Api\KelasController;
+use App\Http\Controllers\Api\MapelController;
 use App\Http\Controllers\Api\PelanggaranController;
 use App\Http\Controllers\Api\PiketController;
 use App\Http\Controllers\Api\PiketTahunanController;
-use App\Http\Controllers\Api\SiswaController;
 use App\Http\Controllers\Api\RekapPiketController;
-use App\Http\Controllers\Api\AbsenSiswaController;
-use App\Http\Controllers\Api\MapelController;
+use App\Http\Controllers\Api\SiswaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -80,7 +81,7 @@ Route::prefix('pelanggaran')->group(function () {
     Route::put('/{id}', [PelanggaranController::class, 'update']);
     Route::delete('/{id}', [PelanggaranController::class, 'destroy']);
 });
-Route::prefix('rekap-piket')->group(function(){
+Route::prefix('rekap-piket')->group(function () {
     Route::get('/', [RekapPiketController::class, 'index']);
     Route::get('/print', [RekapPiketController::class, 'printRekap'])->name('rekap-piket.cetak');
     Route::post('/', [RekapPiketController::class, 'store']);
@@ -88,14 +89,21 @@ Route::prefix('rekap-piket')->group(function(){
     Route::put('/{id}', [RekapPiketController::class, 'update']);
     Route::delete('/{id}', [RekapPiketController::class, 'destroy']);
 });
-Route::prefix('absensi-siswa')->group(function(){
+Route::prefix('absensi-siswa')->group(function () {
     Route::get('/', [AbsenSiswaController::class, 'index']);
-    Route::get('/check-absen/{id}',[AbsenSiswaController::class, 'checkAbsen']);
-    Route::get('/hadir-semua/{id}',[AbsenSiswaController::class, 'hadirSemuaAbsen']); 
-    Route::get('/cetak-pdf/{id}',[AbsenSiswaController::class, 'cetakAbsen']);    
-    Route::post('/check-absen',[AbsenSiswaController::class, 'storeAbsen']);
+    Route::get('/check-absen/{id}', [AbsenSiswaController::class, 'checkAbsen']);
+    Route::get('/hadir-semua/{id}', [AbsenSiswaController::class, 'hadirSemuaAbsen']);
+    Route::get('/cetak-pdf/{id}', [AbsenSiswaController::class, 'cetakAbsen']);
+    Route::post('/check-absen', [AbsenSiswaController::class, 'storeAbsen']);
     Route::post('/', [AbsenSiswaController::class, 'store']);
     Route::get('/{id}', [AbsenSiswaController::class, 'show']);
     Route::put('/{id}', [AbsenSiswaController::class, 'update']);
     Route::delete('/{id}', [AbsenSiswaController::class, 'destroy']);
+});
+Route::prefix('absensi-guru')->group(function () {
+    Route::get('/', [AbsenGuruController::class, 'index']);
+    Route::post('/', [AbsenGuruController::class, 'store']);
+    Route::get('/{id}', [AbsenGuruController::class, 'show']);
+    Route::put('/{id}', [AbsenGuruController::class, 'update']);
+    Route::delete('/{id}', [AbsenGuruController::class, 'destroy']);
 });

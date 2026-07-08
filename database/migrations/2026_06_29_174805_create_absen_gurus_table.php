@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -17,7 +16,7 @@ return new class extends Migration
             $table->foreign('guru_id')->references('id')->on('guru')->onDelete('cascade');
             $table->date('tanggal');
             $table->time('jam_masuk');
-            $table->time('jam_keluar');
+            $table->time('jam_keluar')->nullable();
             $table->enum('status', ['H', 'I', 'S'])->default('H');
             $table->string('keterangan')->nullable();
             $table->timestamps();

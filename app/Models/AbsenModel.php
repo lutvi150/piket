@@ -5,9 +5,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class AbsenModel extends Model
 {
-    protected $table    = 'absensi';
+    protected $table = 'absensi';
     protected $fillable = ['tanggal', 'jam_masuk', 'jam_keluar', 'id_mapel', 'id_kelas', 'jumlah_siswa', 'id_guru'];
-    public $timestamps  = true;
+    public $timestamps = true;
     public function mapel()
     {
         return $this->belongsTo(Mapel::class, 'id_mapel');
