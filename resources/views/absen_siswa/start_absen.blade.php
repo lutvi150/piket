@@ -37,22 +37,26 @@
                                         </ul>
                                     </div>
                                 @endif
-                                <!-- Tabel -->
-                                <div class="table-responsive">
-                                    <a href="{{ url('absensi-siswa') }}" class="btn btn-danger btn-sm"><i
-                                            class="fa fa-reply"></i> Kembali</a>
-                                    @if (auth()->user()->hasRole(['guru_mapel']))
-                                        <button type="button" class="btn btn-success btn-sm" onclick="makeAllAbsensi()"><i
-                                                class="fa fa-check"></i> Hadir Semua</button>
-                                    @endif
-                                    <!-- Toolbar -->
-                                    <div class="row mb-3">
-                                        <div class="col-md-3">
-                                            <button type="button" class="btn btn-warning btn-xs" onclick="cetakPdf()">
+                                <!-- Filter -->
+                                <div class="row" style="margin-bottom:15px;">
+                                    <div class="col-md-6">
+                                        <label>&nbsp;</label>
+                                        <div>
+                                            <a href="{{ url('absensi-siswa') }}" class="btn btn-danger btn-sm"><i
+                                                    class="fa fa-reply"></i> Kembali</a>
+                                            @if (auth()->user()->hasRole(['guru_mapel']))
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                    onclick="makeAllAbsensi()"><i class="fa fa-check"></i> Hadir
+                                                    Semua</button>
+                                            @endif
+                                            <button type="button" class="btn btn-warning btn-sm " onclick="cetakPdf()">
                                                 <i class="fa fa-print"></i> Cetak Laporan
                                             </button>
                                         </div>
                                     </div>
+                                </div>
+                                <!-- Tabel -->
+                                <div class="table-responsive">
                                     <table id="example1" class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
@@ -97,16 +101,15 @@
     </script>
     <script>
         const roles = @json(session('data.role'));
+        const id_absen = window.location.pathname.replace(/\/$/, '').split('/').pop();
         $(document).ready(function() {
             get_data();
         });
-
         get_data = () => {
             const isGuruMapel = roles.includes('guru_mapel');
-            const id = window.location.pathname.split('/').pop();
             $.ajax({
                 type: "GET",
-                url: `${BASE_URL}/api/absensi-siswa/check-absen/${id}`,
+                url: `${BASE_URL}/api/absensi-siswa/check-absen/${id_absen}`,
                 dataType: "JSON",
                 success: function(response) {
                     let html = '';
@@ -139,17 +142,16 @@
                             lampiran =
                                 `<a href="${BASE_URL}/uploads/piket/${item.lampiran}" class="btn btn-primary btn-xs" target="_blank"> <i class="fa fa-file"></i> Lampiran</a>`;
                         }
-                        html += `<tr>
+                        html += `
+                        <tr>
                             <td>${index + 1}</td>
-                            <td>${item.nama_siswa}</td>
+                            <td>${item.nama_siswa ? item.nama_siswa.toUpperCase() : '-'}</td>
                             <td>${item.nisn}</td>
                             <td>${item.status}</td>
                             <td>${item.keterangan ?? '-'}</td>
-                            <td>
-                                ${isGuruMapel ? tombol : ''}
-                            ${lampiran}
-                            </td>
-                        </tr>`;
+                            <td> ${isGuruMapel ? tombol : ''}${lampiran}
+                                </td>
+                                </tr>`;
                     });
                     $("#example1 tbody").html(html);
                 },
@@ -199,7 +201,6 @@
             });
         }
         makeAbsensi = (id, status) => {
-
             if (status === 'Alfa') {
 
                 Notiflix.Confirm.prompt(
@@ -218,7 +219,6 @@
 
                 return;
             }
-
             Notiflix.Confirm.show(
                 'Konfirmasi Isi Absen',
                 'Apakah Anda yakin?',
@@ -237,5 +237,39 @@
             const id = window.location.pathname.split('/').pop();
             window.open(`${BASE_URL}/api/absensi-siswa/cetak-pdf/${id}`, '_blank');
         }
+        const makeAllAbsensi = () => {
+            Notiflix.Confirm.show(
+                'Konfirmasi',
+                'Semua siswa akan ditandai sebagai hadir. Lanjutkan?',
+                'Ya, Hadir Semua',
+                'Batal',
+                async () => {
+                        try {
+                            const response = await fetch(`${BASE_URL}/hadir-semua/${id_absen}`, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                        .content,
+                                    'Accept': 'application/json'
+                                }
+                            });
+
+                            const result = await response.json();
+                            if (!response.ok || !result.status) {
+                                throw new Error(result.msg || 'Terjadi kesalahan.');
+                            }
+                            Notiflix.Notify.success(result.msg);
+                            get_data();
+
+                        } catch (error) {
+                            console.error(error);
+                            Notiflix.Notify.failure(error.message || 'Gagal memproses data.');
+                        }
+                    },
+                    () => {
+                        Notiflix.Notify.info('Proses dibatalkan.');
+                    }
+            );
+        };
     </script>
 @endsection

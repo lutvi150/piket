@@ -101,9 +101,10 @@
             <tr>
                 <th width="5%">No</th>
                 <th width="28%">Nama Guru</th>
-                <th width="10%">Status</th>
-                <th width="18%">Mata Pelajaran</th>
-                <th width="10%">Jam</th>
+                <th width="10%">Mapel</th>
+                <th width="10%">Kelas</th>
+                <th width="10%">Jam Ke-</th>
+                <th width="10%">Tidak Hadir(Sakit, Izin, Alpa)</th>
                 <th>Keterangan</th>
             </tr>
         </thead>
@@ -114,14 +115,15 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->piket->nama_guru }}</td>
-                    <td>{{ $item->status }}</td>
                     <td>{{ $item->mapel->nama_mapel ?? '-' }}</td>
-                    <td>{{ $item->terlambat }}</td>
+                    <td>{{ $item->kelas->nama_kelas ?? '-' }}</td>
+                    <td>{{ $item->jam_ke ?? '-' }}</td>
+                    <td>{{ $item->status }}</td>
                     <td>{{ $item->keterangan }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" class="text-center">
+                    <td colspan="7" class="text-center">
                         Tidak ada data.
                     </td>
                 </tr>
@@ -139,10 +141,10 @@
             <tr>
                 <th width="5%">No</th>
                 <th width="25%">Nama Siswa</th>
-                <th width="10%">Status</th>
+                <th width="10%">Status (Sakit, Izin, Alpa, Terlambat)</th>
                 <th width="18%">Kelas</th>
-                <th width="18%">Mata Pelajaran</th>
-                <th width="10%">Jam</th>
+                <th width="18%">Mapel</th>
+                <th width="10%">Jam Ke</th>
                 <th>Keterangan</th>
             </tr>
         </thead>
@@ -156,7 +158,7 @@
                     <td>{{ $item->status }}</td>
                     <td>{{ $item->kelas->nama_kelas ?? '-' }}</td>
                     <td>{{ $item->mapel->nama_mapel ?? '-' }}</td>
-                    <td>{{ $item->terlambat }}</td>
+                    <td>{{ $item->jam_ke ?? '-' }}</td>
                     <td>{{ $item->keterangan }}</td>
                 </tr>
             @empty

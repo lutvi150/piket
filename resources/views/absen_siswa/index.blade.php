@@ -19,47 +19,90 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="box">
+
                         <div class="box-header">
                             <h3 class="box-title">Data Absen</h3>
-                            <div style="margin-top:10px">
 
-                                @if (auth()->user()->hasRole(['admin', 'guru_mapel']))
-                                    <div class="alert alert-info" role="alert">
-                                        <ol>
-                                            <li>Untuk menambahkan absen, silakan klik tombol "Buat Absen".</li>
-                                        </ol>
-                                    </div>
-                                @endif
-                                @if (auth()->user()->hasRole(['admin', 'guru_mapel']))
-                                    <button type="button" class="btn btn-success btm-sm" onclick="showModalAbsen()"><i
-                                            class="fa fa-plus"></i> Buat Absen</button>
-                                @endif
-                            </div>
-                        </div><!-- /.box-header -->
+                            @if (auth()->user()->hasRole(['admin', 'guru_mapel']))
+                                <div class="alert alert-info" role="alert" style="margin-top:15px;">
+                                    <ol style="margin-bottom:0;">
+                                        <li>Untuk menambahkan absen, silakan klik tombol <strong>"Buat Absen"</strong>.</li>
+                                    </ol>
+                                </div>
+                            @endif
+                        </div>
+
                         <div class="box-body">
+
+                            <!-- Filter -->
+                            <div class="row" style="margin-bottom:15px;">
+
+                                <div class="col-md-3">
+                                    <label>Tanggal Mulai</label>
+                                    <input type="date" class="form-control" id="tanggal_mulai">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label>Tanggal Selesai</label>
+                                    <input type="date" class="form-control" id="tanggal_selesai">
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label>Kelas</label>
+                                    <select class="form-control kelas" id="kelas">
+                                        <option value="">-- Semua Kelas --</option>
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label>&nbsp;</label>
+                                    <div>
+                                        <button class="btn btn-primary" onclick="get_data()()">
+                                            <i class="fa fa-search"></i> Filter
+                                        </button>
+
+                                        <button class="btn btn-default" onclick="resetFilter()">
+                                            <i class="fa fa-refresh"></i> Reset
+                                        </button>
+
+                                        @if (auth()->user()->hasRole(['admin', 'guru_mapel']))
+                                            <button type="button" class="btn btn-success pull-right"
+                                                onclick="showModalAbsen()">
+                                                <i class="fa fa-plus"></i> Buat Absen
+                                            </button>
+                                        @endif
+                                    </div>
+                                </div>
+
+                            </div>
+
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>No.</th>
+                                        <th width="50">No.</th>
+
                                         @if (auth()->user()->hasRole(['admin', 'guru_bk', 'wali_kelas']))
                                             <th>Nama Guru</th>
                                         @endif
+
                                         <th>Tanggal</th>
                                         <th>Jam Mengajar</th>
                                         <th>Kelas</th>
                                         <th>Mata Pelajaran</th>
-                                        <th>Menu</th>
+                                        <th width="120">Menu</th>
                                     </tr>
                                 </thead>
+
                                 <tbody id="table-absen">
-                                   
                                 </tbody>
                             </table>
-                        </div><!-- /.box-body -->
-                    </div><!-- /.box -->
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </section><!-- /.content -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- Modal -->
@@ -109,7 +152,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="">Kelas</label>
-                                <select name="id_kelas" class="form-control" id="kelas"></select>
+                                <select name="id_kelas" class="form-control kelas" id="kelas"></select>
                                 <small id="helpId" class="text-muted text-error e-id_kelas">Help text</small>
                             </div>
                         </div>
@@ -172,7 +215,7 @@
                 </option>
             `;
                 });
-                $("#kelas").html(option);
+                $(".kelas").html(option);
             } catch (error) {
                 console.log(error);
 
@@ -246,8 +289,18 @@
         const get_data = async () => {
             const showGuru = roles.some(role => ['admin', 'guru_bk', 'wali_kelas'].includes(role));
             const isGuruMapel = roles.includes('guru_mapel');
+
+            const tanggal_mulai = $('#tanggal_mulai').val();
+            const tanggal_selesai = $('#tanggal_selesai').val();
+            const kelas = $('#kelas').val();
+
+            const params = new URLSearchParams();
+
+            if (tanggal_mulai) params.append('tanggal_mulai', tanggal_mulai);
+            if (tanggal_selesai) params.append('tanggal_selesai', tanggal_selesai);
+            if (kelas) params.append('kelas', kelas);
             try {
-                const response = await fetch(`${BASE_URL}/absensi-siswa-api`);
+                const response = await fetch(`${BASE_URL}/absensi-siswa-api?${params.toString()}`);
                 if (!response.ok) {
                     throw new Error("Gagal mengambil data");
                 }
@@ -266,8 +319,8 @@
                         <td>
                             <a href="${BASE_URL}/absensi-siswa/start-absen/${item.id}"  class="btn btn-danger btn-xs"><i class="fa fa-eye"></i> ${isGuruMapel ? 'Mulai Absen' : 'Check Absen'}</a>
                                ${isGuruMapel ? `
-                            <a href="#" onclick="edit_data(${item.id})" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
-                            <a href="#" onclick="delete_data(${item.id})" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i>Hapus</a>`:''}
+                                        <a href="#" onclick="edit_data(${item.id})" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                                        <a href="#" onclick="delete_data(${item.id})" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i>Hapus</a>`:''}
                         </td>
                         </tr>`
                 });
@@ -277,7 +330,12 @@
                 handleAjaxError(error);
             }
         };
-
+        const resetFilter = () => {
+            $('#tanggal_mulai').val('');
+            $('#tanggal_selesai').val('');
+            $('#kelas').val('');
+            get_data();
+        };
         const edit_data = async (id) => {
             try {
                 sessionStorage.setItem('TY', 'PUT');

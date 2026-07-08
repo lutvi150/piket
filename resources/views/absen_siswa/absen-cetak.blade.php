@@ -70,9 +70,24 @@
 
     <hr style="border:1px solid #000; margin-top:5px; margin-bottom:20px;">
     <h3>ABSEN SISWA</h3>
-
-
-
+   <table style="border-collapse: collapse; border: none; margin-bottom: 15px;">
+    <tr>
+        <td style="border: none; padding: 3px 10px 3px 0; font-weight: bold; width: 120px;">
+            Kelas
+        </td>
+        <td style="border: none; padding: 3px 0;">
+            : {{ $absen->kelas->nama_kelas ?? '-' }}
+        </td>
+    </tr>
+    <tr>
+        <td style="border: none; padding: 3px 10px 3px 0; font-weight: bold;">
+            Tanggal Absen
+        </td>
+        <td style="border: none; padding: 3px 0;">
+            : {{ \Carbon\Carbon::parse($absen->tanggal)->translatedFormat('d F Y') }}
+        </td>
+    </tr>
+</table>
     <table>
         <thead>
             <tr>
@@ -85,12 +100,11 @@
         </thead>
         <tbody>
             @foreach ($data as $item)
-                
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->nama_siswa ?? '-' }}</td>
                     <td>{{ $item->nisn ?? '-' }}</td>
-                    <td>{{ $item->status_text}}</td>
+                    <td>{{ $item->status_text }}</td>
                     <td>{{ $item->keterangan }}</td>
                 </tr>
             @endforeach

@@ -9,6 +9,7 @@ use App\Models\CheckAbsenModel as CheckAbsen;
 use App\Models\KelasModel as Kelas;
 use App\Models\RekapPiket;
 use App\Models\SiswaModel as Siswa;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Mpdf\Mpdf;
@@ -25,18 +26,34 @@ class AbsenSiswaController extends Controller
                 'kelas',
                 'mapel',
             ]);
+
             $roles = session('data.role', []);
+
             if (! empty(array_intersect($roles, ['admin', 'guru_bk', 'wali_kelas']))) {
                 $query->leftJoin('guru', 'guru.id_user', '=', 'absensi.id_guru')
                     ->select('absensi.*', 'guru.nama_guru');
             }
+
             if (in_array('guru', $roles)) {
                 $query->where('absensi.id_guru', session('data.id'));
             }
+
+            $query
+                ->when(request('tanggal_mulai'), function ($q, $tanggal) {
+                    $q->whereDate('tanggal', '>=', $tanggal);
+                })
+                ->when(request('tanggal_selesai'), function ($q, $tanggal) {
+                    $q->whereDate('tanggal', '<=', $tanggal);
+                })
+                ->when(request('kelas'), function ($q, $kelas) {
+                    $q->where('id_kelas', $kelas);
+                });
+
             $absen = $query
                 ->latest('tanggal')
                 ->latest('created_at')
                 ->get();
+
             return response()->json([
                 'status'  => true,
                 'msg'     => 'Data absen berhasil diambil',
@@ -44,8 +61,10 @@ class AbsenSiswaController extends Controller
                 'data'    => $absen,
                 'content' => null,
             ], 200);
+
         } catch (\Exception $e) {
             Log::error($e);
+
             return response()->json([
                 'status'  => false,
                 'msg'     => 'Data absen gagal diambil',
@@ -169,10 +188,13 @@ class AbsenSiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Absen $id)
+    public function destroy($id)
     {
         try {
+            $absen = Absen::findOrFail($id);
+
             $absen->delete();
+
             return response()->json([
                 'status'  => true,
                 'msg'     => 'Data absen berhasil dihapus',
@@ -180,8 +202,21 @@ class AbsenSiswaController extends Controller
                 'data'    => null,
                 'content' => null,
             ], 200);
+
+        } catch (ModelNotFoundException $e) {
+
+            return response()->json([
+                'status'  => false,
+                'msg'     => 'Data absen tidak ditemukan',
+                'errors'  => null,
+                'data'    => null,
+                'content' => null,
+            ], 404);
+
         } catch (\Exception $e) {
+
             Log::error($e);
+
             return response()->json([
                 'status'  => false,
                 'msg'     => 'Data absen gagal dihapus',
@@ -234,6 +269,42 @@ class AbsenSiswaController extends Controller
             return response()->json([
                 'status'  => false,
                 'msg'     => 'Data absen gagal diambil',
+                'errors'  => $e->getMessage(),
+                'data'    => null,
+                'content' => null,
+            ], 500);
+        }
+    }
+    public function hadirSemuaAbsen(CheckAbsenSiswaRequest $request)
+    {
+        try {
+            $absen = Absen::with('kelas')->findOrFail($id);
+            $siswa = Siswa::where('id_kelas', $absen->id_kelas)->get();
+            foreach ($siswa as $item) {
+                CheckAbsen::updateOrCreate(
+                    [
+                        'id_absensi' => $absen->id,
+                        'id_siswa'   => $item->id,
+                    ],
+                    [
+                        'status'     => 'H',
+                        'keterangan' => null,
+                    ]
+                );
+            }
+            return response()->json([
+                'status'  => true,
+                'msg'     => 'Semua siswa berhasil ditandai hadir.',
+                'errors'  => null,
+                'data'    => null,
+                'content' => null,
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error($e);
+            return response()->json([
+                'status'  => false,
+                'msg'     => 'Gagal menandai semua siswa hadir.',
                 'errors'  => $e->getMessage(),
                 'data'    => null,
                 'content' => null,
@@ -308,10 +379,6 @@ class AbsenSiswaController extends Controller
             $item->keterangan  = $keterangan;
             return $item;
         });
-        // $hasil = [
-        //     'absen' => $absen,
-        //     'data'  => $data,
-        // ];return response()->json($hasil);exit;
         $html = view('absen_siswa.absen-cetak', [
             'absen' => $absen,
             'data'  => $data,
@@ -327,10 +394,5 @@ class AbsenSiswaController extends Controller
                 'Content-Type' => 'application/pdf',
             ]
         );
-
-        // } catch (\Exception $e) {
-        // return back()->with('error', $e->getMessage());
-
-        // }
     }
 }

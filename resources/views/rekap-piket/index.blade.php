@@ -184,7 +184,7 @@
                     <form action="" id="form-siswa" method="post">
                         <input type="hidden" id="id_siswa" name="piket_id">
                         <input type="hidden" id="jenis_piket" name="jenis" value="siswa">
-                        <input type="hidden" id="id_kelas" name="id_kelas">
+                        <input type="hidden" id="id_kelas_siswa" name="id_kelas">
                         <div class="form-group cari-siswa">
                             <label for="">Cari Siswa</label>
                             <input type="text" name="cari_siswa" id="cari_siswa" class="form-control"
@@ -371,20 +371,21 @@
                             ${item.nama_siswa} || ${item.nisn}
                          </li>`;
                         });
-
                         $("#result_siswa").html(html);
                     }
                 });
             }, 300);
         }, );
         $(document).on("click", ".select-item", function() {
+            console.log($(this).data("nama_siswa"));
+            console.log($(this).data("id_kelas"));
             $("#search").val($(this).text());
             $("#id_siswa").val($(this).data("id"));
-            $("#id_kelas").val($(this).data("id_kelas"));
+            $("#id_kelas_siswa").val($(this).data("id_kelas"));
             $("#nisn").val($(this).data("nisn"));
             $("#kelas").val($(this).data("kelas"));
             $("#nama_siswa").val($(this).data("nama_siswa"));
-            $("#result").html("");
+            $("#result_siswa").html("");
         });
         $("#cari_guru").on("keyup", function() {
             clearTimeout(timer);
@@ -405,7 +406,6 @@
                             ${item.nama_guru} || ${item.nip}
                          </li>`;
                         });
-
                         $("#result_guru").html(html);
                     }
                 });
@@ -547,7 +547,10 @@
                                 `Data Piket Berhasil Dicatat`,
                                 `Okay`,
                             );
-                            $("#form-add")[0].reset();
+                            const form = jenis === "siswa" ?
+                        $("#form-siswa") :
+                        $("#form-guru");
+                    form[0].reset();
                         }, 500);
                     } else {
                         $.each(response.errors, function(key, value) {
