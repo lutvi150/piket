@@ -87,7 +87,7 @@
                 <th>Jenis Pelanggaran</th>
                 <th>Tanggal</th>
                 <th>Poin</th>
-                <th>Sanksi</th>
+                <th>Tindakan</th>
                 <th>Keterangan</th>
             </tr>
         </thead>

@@ -79,20 +79,20 @@ class AbsenGuruController extends Controller
                     'status' => 'H',
                 ]);
 
-                $guru->rekapPiket()->firstOrCreate(
-                    [
-                        'tanggal' => $tanggal,
-                    ],
-                    [
-                        'kelas_id' => null,
-                        'mapel_id' => null,
-                        'terlambat' => 0,
-                        'jam_ke' => null,
-                        'status' => 'H',
-                        'keterangan' => 'Absen masuk melalui aplikasi',
-                        'lampiran' => null,
-                    ]
-                );
+                // $guru->rekapPiket()->firstOrCreate(
+                //     [
+                //         'tanggal' => $tanggal,
+                //     ],
+                //     [
+                //         'kelas_id' => null,
+                //         'mapel_id' => null,
+                //         'terlambat' => 0,
+                //         'jam_ke' => null,
+                //         'status' => 'H',
+                //         'keterangan' => 'Absen masuk melalui aplikasi',
+                //         'lampiran' => null,
+                //     ]
+                // );
 
             });
 

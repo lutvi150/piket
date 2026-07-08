@@ -150,25 +150,47 @@
             });
         }
         siswa_chart = (response) => {
+
             const ctx = document.getElementById('myChart');
-            new Chart(ctx, {
-                type: 'line',
+
+            // Hapus chart lama jika sudah ada
+            if (window.siswaChart) {
+                window.siswaChart.destroy();
+            }
+
+            window.siswaChart = new Chart(ctx, {
+                type: 'bar',
                 data: {
                     labels: response.dataKelas,
                     datasets: [{
-                        label: 'Jumlah Siswa',
-                        data: response.data,
-                        borderWidth: 1
-                    }]
+                            label: 'Laki-laki',
+                            data: response.laki,
+                            backgroundColor: '#3498db',
+                            borderColor: '#2980b9',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Perempuan',
+                            data: response.perempuan,
+                            backgroundColor: '#e91e63',
+                            borderColor: '#c2185b',
+                            borderWidth: 1
+                        }
+                    ]
                 },
                 options: {
+                    responsive: true,
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
                         }
                     }
                 }
             });
+
         }
         kehadiran = (response) => {
             const ctx = document.getElementById('kehadiran');
@@ -211,7 +233,7 @@
                     ],
                     datasets: [{
                         label: 'Pelanggaran',
-                        data: [1,0,0,0],
+                        data: [1, 0, 0, 0],
                         borderWidth: 1
                     }]
                 },
