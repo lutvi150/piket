@@ -1,12 +1,12 @@
 <?php
-    namespace App\Http\Requests;
 
-    use Illuminate\Contracts\Validation\ValidationRule;
-    use Illuminate\Foundation\Http\FormRequest;
-    use Illuminate\Validation\Rule;
+namespace App\Http\Requests;
 
-    class AbsenGuruRequest extends FormRequest
-    {
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Foundation\Http\FormRequest;
+
+class AbsenRequest extends FormRequest
+{
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -23,67 +23,34 @@
     public function rules(): array
     {
         return [
-            'guru_id'    => [
-                'required',
-                'exists:guru,id',
-            ],
-
-            'tanggal'    => [
-                'required',
-                'date',
-            ],
-
-            'jam_masuk'  => [
-                'nullable',
-                'date_format:H:i:s',
-                'before_or_equal:jam_keluar',
-            ],
-
-            'jam_keluar' => [
-                'nullable',
-                'date_format:H:i:s',
-                'after_or_equal:jam_masuk',
-            ],
-
-            'status'     => [
-                'required',
-                Rule::in(['H', 'I', 'S', 'A']),
-            ],
-
-            'keterangan' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
+            'tanggal'=>'required|date',
+            'masuk'=>'required',
+            'keluar'=>'required',
+            'id_mapel'=>'required|exists:mapel,id',
+            'id_kelas'=>'required|exists:kelas,id',
         ];
     }
-
     public function messages(): array
     {
         return [
-            'guru_id.required'          => 'Guru wajib dipilih.',
-            'guru_id.exists'            => 'Guru tidak ditemukan.',
-            'tanggal.required'          => 'Tanggal wajib diisi.',
-            'tanggal.date'              => 'Format tanggal tidak valid.',
-            'jam_masuk.date_format'     => 'Format jam masuk harus HH:mm:ss.',
-            'jam_masuk.before_or_equal' => 'Jam masuk tidak boleh melebihi jam keluar.',
-            'jam_keluar.date_format'    => 'Format jam keluar harus HH:mm:ss.',
-            'jam_keluar.after_or_equal' => 'Jam keluar tidak boleh lebih awal dari jam masuk.',
-            'status.required'           => 'Status kehadiran wajib dipilih.',
-            'status.in'                 => 'Status kehadiran tidak valid.',
-            'keterangan.max'            => 'Keterangan maksimal 255 karakter.',
+            'tanggal.required' => 'Tanggal wajib diisi',
+            'tanggal.date' => 'Tanggal harus berupa tanggal',
+            'masuk.required' => 'Waktu masuk wajib diisi',
+            'keluar.required' => 'Waktu keluar wajib diisi',
+            'id_mapel.required' => 'Mapel wajib diisi',
+            'id_mapel.exists' => 'Mapel tidak ditemukan',
+            'id_kelas.required' => 'Kelas wajib diisi',
+            'id_kelas.exists'=> 'Kelas tidak ditemukan',
         ];
     }
-
     public function attributes(): array
     {
         return [
-            'guru_id'    => 'Guru',
-            'tanggal'    => 'Tanggal',
-            'jam_masuk'  => 'Jam Masuk',
-            'jam_keluar' => 'Jam Keluar',
-            'status'     => 'Status Kehadiran',
-            'keterangan' => 'Keterangan',
+            'tanggal' => 'Tanggal',
+            'masuk' => 'Waktu Masuk',
+            'keluar' => 'Waktu Keluar',
+            'mapel' => 'Mapel',
+            'id_kelas' => 'Kelas',
         ];
     }
 }
