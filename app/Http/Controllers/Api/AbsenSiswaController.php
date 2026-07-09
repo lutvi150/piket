@@ -275,7 +275,7 @@ class AbsenSiswaController extends Controller
             ], 500);
         }
     }
-    public function hadirSemuaAbsen(CheckAbsenSiswaRequest $request)
+    public function hadirSemuaAbsen(Request $request,$id)
     {
         try {
             $absen = Absen::with('kelas')->findOrFail($id);

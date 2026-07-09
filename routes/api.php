@@ -64,6 +64,8 @@ Route::prefix('piket')->group(function () {
 Route::prefix('dashboard')->group(function () {
     Route::get('/', [GuruController::class, 'dashboard']);
     Route::get('chart-siswa', [Dashboard::class, 'chartSiswa']);
+    Route::get('kehadiran', [Dashboard::class, 'grafikKehadiran']);
+    Route::get('pelanggaran', [Dashboard::class, 'grafikPelanggaran']);
 });
 Route::prefix('piket-tahunan')->group(function () {
     Route::get('/', [PiketTahunanController::class, 'index']);

@@ -245,8 +245,8 @@
                 'Batal',
                 async () => {
                         try {
-                            const response = await fetch(`${BASE_URL}/hadir-semua/${id_absen}`, {
-                                method: 'POST',
+                            const response = await fetch(`${BASE_URL}/api/absensi-siswa/hadir-semua/${id_absen}`, {
+                                method: 'GET',
                                 headers: {
                                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
                                         .content,

@@ -97,29 +97,116 @@
                 </section>
                 <section class="col-lg-6 connectedSortable">
                     <div class="box box-info">
-                        <div class="box-header">
-                            <i class="fa fa-users"></i>
-                            <h3 class="box-title">Grafik Kehadiran Siswa</h3>
+                        <div class="box-header with-border">
+
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <h3 class="box-title">
+                                        <i class="fa fa-users"></i>
+                                        Grafik Kehadiran Siswa
+                                    </h3>
+                                </div>
+
+                                <div class="col-md-7">
+                                    <div class="pull-right" style="display:flex;gap:8px;">
+                                        <select class="form-control input-sm" onchange=" loadKehadiran();" id="tahun_kehadiran" style="width:90px;">
+                                            @for ($i = date('Y'); $i >= date('Y') - 5; $i--)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+
+                                        <select class="form-control input-sm" onchange=" loadKehadiran();" id="bulan_kehadiran" style="width:120px;">
+                                            @php
+                                                $bulan = [
+                                                    1 => 'Januari',
+                                                    2 => 'Februari',
+                                                    3 => 'Maret',
+                                                    4 => 'April',
+                                                    5 => 'Mei',
+                                                    6 => 'Juni',
+                                                    7 => 'Juli',
+                                                    8 => 'Agustus',
+                                                    9 => 'September',
+                                                    10 => 'Oktober',
+                                                    11 => 'November',
+                                                    12 => 'Desember',
+                                                ];
+                                            @endphp
+
+                                            @foreach ($bulan as $key => $value)
+                                                <option value="{{ $key }}"
+                                                    {{ date('n') == $key ? 'selected' : '' }}>
+                                                    {{ $value }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
+
                         <div class="box-body">
                             <canvas id="kehadiran"></canvas>
-                        </div>
-                        <div class="box-footer clearfix">
                         </div>
                     </div>
                 </section>
 
                 <section class="col-lg-12 connectedSortable">
                     <div class="box box-info">
-                        <div class="box-header">
-                            <i class="fa fa-users"></i>
-                            <h3 class="box-title">Grafik Pelanggaran Siswa</h3>
+                        <div class="box-header with-border">
+                            <div class="row">
+                                <div class="col-md-4 col-sm-12">
+                                    <h3 class="box-title">
+                                        <i class="fa fa-users"></i>
+                                        Grafik Pelanggaran Siswa
+                                    </h3>
+                                </div>
 
+                                <div class="col-md-8 col-sm-12">
+                                    <div class="pull-right" style="display:flex; gap:10px; align-items:center;">
+
+                                        <select class="form-control" onchange=" loadPelanggaran();" id="tahun_pelanggaran" style="width:120px;">
+                                            @for ($i = date('Y'); $i >= date('Y') - 5; $i--)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+
+                                        <select class="form-control" onchange=" loadPelanggaran();" id="bulan_pelanggaran" style="width:150px;">
+                                            @php
+                                                $bulan = [
+                                                    1 => 'Januari',
+                                                    2 => 'Februari',
+                                                    3 => 'Maret',
+                                                    4 => 'April',
+                                                    5 => 'Mei',
+                                                    6 => 'Juni',
+                                                    7 => 'Juli',
+                                                    8 => 'Agustus',
+                                                    9 => 'September',
+                                                    10 => 'Oktober',
+                                                    11 => 'November',
+                                                    12 => 'Desember',
+                                                ];
+                                            @endphp
+
+                                            @foreach ($bulan as $key => $value)
+                                                <option value="{{ $key }}"
+                                                    {{ date('n') == $key ? 'selected' : '' }}>
+                                                    {{ $value }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                         <div class="box-body">
                             <canvas id="pelanggaran"></canvas>
                         </div>
+
                         <div class="box-footer clearfix">
                         </div>
                     </div>
@@ -136,9 +223,65 @@
     <script>
         $(document).ready(function() {
             get_data_chart_siswa();
-            kehadiran();
-            pelanggaran();
+            loadPelanggaran();
+            loadKehadiran();
         });
+        $('#tahun_kehadiran, #bulan_kehadiran').on('change', function() {
+            loadKehadiran();
+        });
+
+        const loadKehadiran = () => {
+            $.ajax({
+                url: BASE_URL + '/api/dashboard/kehadiran',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    tahun: $('#tahun_kehadiran').val(),
+                    bulan: $('#bulan_kehadiran').val()
+                },
+                success: function(response) {
+                    kehadiran(response);
+                },
+                error: function(xhr) {
+                    console.log(xhr);
+                }
+            });
+
+        }
+        let chartKehadiran = null;
+
+        function kehadiran(response) {
+            if (chartKehadiran) {
+                chartKehadiran.destroy();
+            }
+            const ctx = document.getElementById('kehadiran').getContext('2d');
+            chartKehadiran = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: response.labels,
+                    datasets: [{
+                        label: 'Jumlah Kehadiran',
+                        data: response.data,
+                        backgroundColor: '#3c8dbc',
+                        borderColor: '#3c8dbc',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+            });
+        }
         get_data_chart_siswa = () => {
             $.ajax({
                 type: "GET",
@@ -150,14 +293,11 @@
             });
         }
         siswa_chart = (response) => {
-
             const ctx = document.getElementById('myChart');
-
             // Hapus chart lama jika sudah ada
             if (window.siswaChart) {
                 window.siswaChart.destroy();
             }
-
             window.siswaChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
@@ -192,52 +332,51 @@
             });
 
         }
-        kehadiran = (response) => {
-            const ctx = document.getElementById('kehadiran');
-            new Chart(ctx, {
-                type: 'bar',
+
+        const loadPelanggaran=()=> {
+            $.ajax({
+                url: BASE_URL + '/api/dashboard/pelanggaran',
+                type: 'GET',
                 data: {
-                    labels: [
-                        1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                        11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
-                    ],
-                    datasets: [{
-                        label: 'Kehadiran',
-                        data: [1, 0, 0, 0],
-                        borderWidth: 1
-                    }]
+                    tahun: $('#tahun_pelanggaran').val(),
+                    bulan: $('#bulan_pelanggaran').val()
                 },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1,
-                                precision: 0
-                            }
-                        }
-                    }
+                success: function(response) {
+                    pelanggaran(response);
                 }
             });
+
         }
-        pelanggaran = (response) => {
-            const ctx = document.getElementById('pelanggaran');
-            new Chart(ctx, {
+
+        $('#tahun_pelanggaran, #bulan_pelanggaran').on('change', function() {
+            loadPelanggaran();
+        });
+
+        let chartPelanggaran = null;
+
+        function pelanggaran(response) {
+
+            if (chartPelanggaran) {
+                chartPelanggaran.destroy();
+            }
+
+            const ctx = document.getElementById('pelanggaran').getContext('2d');
+
+            chartPelanggaran = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: [
-                        1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                        11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                        21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
-                    ],
+                    labels: response.labels,
                     datasets: [{
-                        label: 'Pelanggaran',
-                        data: [1, 0, 0, 0],
+                        label: 'Jumlah Pelanggaran',
+                        data: response.data,
+                        backgroundColor: '#dd4b39',
+                        borderColor: '#dd4b39',
                         borderWidth: 1
                     }]
                 },
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             beginAtZero: true,
