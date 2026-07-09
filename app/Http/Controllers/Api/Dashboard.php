@@ -45,32 +45,53 @@ class Dashboard extends Controller
     {
         $tahun = $request->tahun ?? now()->year;
         $bulan = $request->bulan ?? now()->month;
-        $jumlahHari = Carbon::create($tahun, $bulan, 1)->daysInMonth;
-        $labels = [];
-        $data   = [];
-
-        for ($i = 1; $i <= $jumlahHari; $i++) {
-            $labels[] = $i;
-            $data[$i] = 0;
-        }
-        $kehadiran = DB::table('check_absensi')
+        $jumlahHari = Carbon::create($tahun, $bulan)->daysInMonth;
+        $labels = range(1, $jumlahHari);
+        $hadir = array_fill(1, $jumlahHari, 0);
+        $izin  = array_fill(1, $jumlahHari, 0);
+        $sakit = array_fill(1, $jumlahHari, 0);
+        $alpha = array_fill(1, $jumlahHari, 0);
+        $absensi = DB::table('check_absensi')
             ->join('absensi', 'absensi.id', '=', 'check_absensi.id_absensi')
-            ->selectRaw('DAY(absensi.tanggal) as hari, COUNT(*) as total')
+            ->selectRaw("
+            DAY(absensi.tanggal) as hari,
+            check_absensi.status,
+            COUNT(*) as total
+        ")
             ->whereYear('absensi.tanggal', $tahun)
             ->whereMonth('absensi.tanggal', $bulan)
-            ->where('check_absensi.status', 'H')
-            ->groupBy(DB::raw('DAY(absensi.tanggal)'))
+            ->groupBy(
+                DB::raw('DAY(absensi.tanggal)'),
+                'check_absensi.status'
+            )
             ->orderBy('hari')
             ->get();
 
-        foreach ($kehadiran as $item) {
-            $data[$item->hari] = $item->total;
-        }
+        foreach ($absensi as $item) {
+            switch ($item->status) {
+                case 'H':
+                    $hadir[$item->hari] = $item->total;
+                    break;
 
+                case 'I':
+                    $izin[$item->hari] = $item->total;
+                    break;
+
+                case 'S':
+                    $sakit[$item->hari] = $item->total;
+                    break;
+
+                case 'A':
+                    $alpha[$item->hari] = $item->total;
+                    break;
+            }
+        }
         return response()->json([
             'labels' => $labels,
-            'data'   => array_values($data),
-            'request'=>$request->all()
+            'hadir'  => array_values($hadir),
+            'izin'   => array_values($izin),
+            'sakit'  => array_values($sakit),
+            'alpha'  => array_values($alpha),
         ]);
     }
     public function grafikPelanggaran(Request $request)
@@ -78,9 +99,9 @@ class Dashboard extends Controller
         $tahun = $request->tahun ?? now()->year;
         $bulan = $request->bulan ?? now()->month;
 
-        $jumlahHari = Carbon::create($tahun, $bulan, 1)->daysInMonth;
-        $labels = range(1, $jumlahHari);
-        $data   = array_fill(1, $jumlahHari, 0);
+        $jumlahHari  = Carbon::create($tahun, $bulan, 1)->daysInMonth;
+        $labels      = range(1, $jumlahHari);
+        $data        = array_fill(1, $jumlahHari, 0);
         $pelanggaran = DB::table('pelanggaran')
             ->selectRaw('DAY(tanggal_pelanggaran) as hari, COUNT(*) as total')
             ->whereYear('tanggal_pelanggaran', $tahun)
@@ -94,9 +115,9 @@ class Dashboard extends Controller
         }
 
         return response()->json([
-            'labels' => $labels,
-            'data'   => array_values($data),
-            'request'=>$request->all()
+            'labels'  => $labels,
+            'data'    => array_values($data),
+            'request' => $request->all(),
         ]);
     }
 

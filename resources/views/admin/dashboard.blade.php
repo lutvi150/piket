@@ -109,13 +109,15 @@
 
                                 <div class="col-md-7">
                                     <div class="pull-right" style="display:flex;gap:8px;">
-                                        <select class="form-control input-sm" onchange=" loadKehadiran();" id="tahun_kehadiran" style="width:90px;">
+                                        <select class="form-control input-sm" onchange=" loadKehadiran();"
+                                            id="tahun_kehadiran" style="width:90px;">
                                             @for ($i = date('Y'); $i >= date('Y') - 5; $i--)
                                                 <option value="{{ $i }}">{{ $i }}</option>
                                             @endfor
                                         </select>
 
-                                        <select class="form-control input-sm" onchange=" loadKehadiran();" id="bulan_kehadiran" style="width:120px;">
+                                        <select class="form-control input-sm" onchange=" loadKehadiran();"
+                                            id="bulan_kehadiran" style="width:120px;">
                                             @php
                                                 $bulan = [
                                                     1 => 'Januari',
@@ -166,13 +168,15 @@
                                 <div class="col-md-8 col-sm-12">
                                     <div class="pull-right" style="display:flex; gap:10px; align-items:center;">
 
-                                        <select class="form-control" onchange=" loadPelanggaran();" id="tahun_pelanggaran" style="width:120px;">
+                                        <select class="form-control" onchange=" loadPelanggaran();" id="tahun_pelanggaran"
+                                            style="width:120px;">
                                             @for ($i = date('Y'); $i >= date('Y') - 5; $i--)
                                                 <option value="{{ $i }}">{{ $i }}</option>
                                             @endfor
                                         </select>
 
-                                        <select class="form-control" onchange=" loadPelanggaran();" id="bulan_pelanggaran" style="width:150px;">
+                                        <select class="form-control" onchange=" loadPelanggaran();" id="bulan_pelanggaran"
+                                            style="width:150px;">
                                             @php
                                                 $bulan = [
                                                     1 => 'Januari',
@@ -250,7 +254,7 @@
         }
         let chartKehadiran = null;
 
-        function kehadiran(response) {
+        const kehadiran = (response) => {
             if (chartKehadiran) {
                 chartKehadiran.destroy();
             }
@@ -260,12 +264,26 @@
                 data: {
                     labels: response.labels,
                     datasets: [{
-                        label: 'Jumlah Kehadiran',
-                        data: response.data,
-                        backgroundColor: '#3c8dbc',
-                        borderColor: '#3c8dbc',
-                        borderWidth: 1
-                    }]
+                            label: 'Hadir',
+                            data: response.hadir,
+                            backgroundColor: '#00a65a'
+                        },
+                        {
+                            label: 'Izin',
+                            data: response.izin,
+                            backgroundColor: '#3c8dbc'
+                        },
+                        {
+                            label: 'Sakit',
+                            data: response.sakit,
+                            backgroundColor: '#f39c12'
+                        },
+                        {
+                            label: 'Alpha',
+                            data: response.alpha,
+                            backgroundColor: '#dd4b39'
+                        }
+                    ]
                 },
                 options: {
                     responsive: true,
@@ -333,7 +351,7 @@
 
         }
 
-        const loadPelanggaran=()=> {
+        const loadPelanggaran = () => {
             $.ajax({
                 url: BASE_URL + '/api/dashboard/pelanggaran',
                 type: 'GET',
