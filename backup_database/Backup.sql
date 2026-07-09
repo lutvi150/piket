@@ -28,11 +28,13 @@ CREATE TABLE IF NOT EXISTS `absen_guru` (
   PRIMARY KEY (`id`),
   KEY `absen_guru_guru_id_foreign` (`guru_id`),
   CONSTRAINT `absen_guru_guru_id_foreign` FOREIGN KEY (`guru_id`) REFERENCES `guru` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table teamclov_demo_8.absen_guru: ~1 rows (approximately)
-REPLACE INTO `absen_guru` (`id`, `guru_id`, `tanggal`, `jam_masuk`, `jam_keluar`, `status`, `keterangan`, `created_at`, `updated_at`) VALUES
-	(8, 87, '2026-07-09', '02:42:19', NULL, 'H', NULL, '2026-07-08 19:42:19', '2026-07-08 19:42:19');
+-- Dumping data for table teamclov_demo_8.absen_guru: ~0 rows (approximately)
+DELETE FROM `absen_guru`;
+INSERT INTO `absen_guru` (`id`, `guru_id`, `tanggal`, `jam_masuk`, `jam_keluar`, `status`, `keterangan`, `created_at`, `updated_at`) VALUES
+	(9, 87, '2026-07-09', '03:59:55', '04:04:30', 'H', NULL, '2026-07-08 20:59:55', '2026-07-08 21:04:30'),
+	(10, 164, '2026-07-09', '08:34:10', '08:34:13', 'H', NULL, '2026-07-09 01:34:10', '2026-07-09 01:34:13');
 
 -- Dumping structure for table teamclov_demo_8.absensi
 CREATE TABLE IF NOT EXISTS `absensi` (
@@ -49,8 +51,9 @@ CREATE TABLE IF NOT EXISTS `absensi` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table teamclov_demo_8.absensi: ~10 rows (approximately)
-REPLACE INTO `absensi` (`id`, `tanggal`, `jam_masuk`, `jam_keluar`, `id_mapel`, `id_kelas`, `jumlah_siswa`, `id_guru`, `created_at`, `updated_at`) VALUES
+-- Dumping data for table teamclov_demo_8.absensi: ~9 rows (approximately)
+DELETE FROM `absensi`;
+INSERT INTO `absensi` (`id`, `tanggal`, `jam_masuk`, `jam_keluar`, `id_mapel`, `id_kelas`, `jumlah_siswa`, `id_guru`, `created_at`, `updated_at`) VALUES
 	(1, '2026-06-28', '08:00:00', '10:00:00', 4, 11, 2, 89, '2026-06-28 01:08:51', '2026-06-28 01:08:51'),
 	(2, '2026-06-26', '07:00:00', '09:00:00', 14, 21, 0, 166, '2026-06-28 06:59:07', '2026-06-28 06:59:07'),
 	(3, '2026-06-22', '07:00:00', '09:25:00', 16, 11, 2, 1, '2026-06-28 19:25:19', '2026-06-29 09:34:04'),
@@ -75,7 +78,8 @@ CREATE TABLE IF NOT EXISTS `check_absensi` (
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table teamclov_demo_8.check_absensi: ~41 rows (approximately)
-REPLACE INTO `check_absensi` (`id`, `id_absensi`, `id_siswa`, `status`, `keterangan`, `created_at`, `updated_at`) VALUES
+DELETE FROM `check_absensi`;
+INSERT INTO `check_absensi` (`id`, `id_absensi`, `id_siswa`, `status`, `keterangan`, `created_at`, `updated_at`) VALUES
 	(1, 4, 7, 'H', NULL, '2026-06-29 09:39:41', '2026-06-29 09:39:41'),
 	(2, 5, 8, 'H', NULL, '2026-06-29 09:40:26', '2026-06-29 09:40:26'),
 	(3, 4, 9, 'H', NULL, '2026-06-29 16:55:25', '2026-06-29 16:55:25'),
@@ -135,38 +139,38 @@ CREATE TABLE IF NOT EXISTS `guru` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `guru_id_user_unique` (`id_user`),
   UNIQUE KEY `guru_nip_unique` (`nip`)
-) ENGINE=InnoDB AUTO_INCREMENT=170 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table teamclov_demo_8.guru: ~79 rows (approximately)
-REPLACE INTO `guru` (`id`, `id_user`, `nama_guru`, `nip`, `jenis_kelamin`, `foto`, `golongan`, `jabatan`, `alamat`, `no_hp`, `created_at`, `updated_at`) VALUES
-	(87, 89, 'NOPRIZAL, M. Pd', '197711092006041006', 'P', NULL, 'III.d', 'KEPALA MADRASAH', '-', '-', '2026-04-15 02:21:37', '2026-04-15 02:21:37'),
-	(89, 91, 'RIZA PUSPITA SARI, S. Pd', '197607142006042019', 'P', NULL, 'IV.b', 'WAKA. KURIKULUM', '-', '-', '2026-04-15 02:21:38', '2026-04-15 02:21:38'),
+-- Dumping data for table teamclov_demo_8.guru: ~78 rows (approximately)
+DELETE FROM `guru`;
+INSERT INTO `guru` (`id`, `id_user`, `nama_guru`, `nip`, `jenis_kelamin`, `foto`, `golongan`, `jabatan`, `alamat`, `no_hp`, `created_at`, `updated_at`) VALUES
+	(87, 89, 'NOPRIZAL, M. PD', '197711092006041006', 'L', '1783561294_6a4efc4e4ef21.jpg', 'III.d', 'KEPALA MADRASAH', 'Komp.Bayamas Jl.Berlian VI F/13 RT.005 RW.003', '082385979381', '2026-04-15 02:21:37', '2026-07-09 01:41:34'),
+	(89, 91, 'RIZA PUSPITA SARI, S. PD', '197607142006042019', 'P', '1783561890_6a4efea21ccbb.jpg', 'IV.b', 'WAKA. KURIKULUM', 'Kuranji', '085374757761', '2026-04-15 02:21:38', '2026-07-09 01:51:30'),
 	(90, 92, 'ABRIS TRI PUTRA, S.SI', '199202152019031017', 'L', '1783537277_6a4e9e7de6c7e.jpg', 'III.b', 'WAKA. SISWA', 'Sungai Lareh', '081267624908', '2026-04-15 02:21:38', '2026-07-08 19:01:17'),
-	(91, 93, 'ADRISMAN, S. Pd.I', '197705312007101003', 'P', NULL, 'III.c', 'WAKA. SARPRAS', '-', '-', '2026-04-15 02:21:38', '2026-04-15 02:21:38'),
-	(92, 94, 'RAHMATULLAH, S. Pd, M.Pd', '198004262005011004', 'P', NULL, 'IV.b', 'WAKA. HUMAS', '-', '-', '2026-04-15 02:21:38', '2026-04-15 02:21:38'),
-	(93, 95, 'FIFIAN RUBIANTI N, S.Ag', '197602182009012006', 'P', NULL, 'III.d', 'BENDAHARA', '-', '-', '2026-04-15 02:21:39', '2026-04-15 02:21:39'),
+	(91, 93, 'ADRISMAN, S. PD.I', '197705312007101003', 'L', '1783561934_6a4efeceadeaa.jpg', 'III.c', 'WAKA. SARPRAS', 'Tui', '085268931381', '2026-04-15 02:21:38', '2026-07-09 01:52:14'),
+	(92, 94, 'RAHMATULLAH, S. PD, M.PD', '198004262005011004', 'L', '1783562001_6a4eff1166c9d.jpg', 'IV.b', 'WAKA. HUMAS', 'Andalas', '082392286303', '2026-04-15 02:21:38', '2026-07-09 01:53:21'),
 	(94, 96, 'HERLINA,S.PD', '197003141997032003', 'P', '1783539783_6a4ea8476bcdd.png', 'IV.b', 'GURU', 'Bypass', '089621711028', '2026-04-15 02:21:39', '2026-07-08 19:43:03'),
 	(95, 97, 'YUSMAINI, S.PD', '197005081999032002', 'P', '1783539541_6a4ea755537e1.jpg', 'IV.b', 'GURU', 'Limau Manis', '081264570881', '2026-04-15 02:21:39', '2026-07-08 19:39:01'),
-	(96, 98, 'Dra. HENDRAYENTI', '196708211997032002', 'P', NULL, 'IV.b', 'GURU', '-', '-', '2026-04-15 02:21:39', '2026-04-15 02:21:39'),
-	(97, 99, 'HARNEWI B, S.Pd', '197105071996032002', 'P', NULL, 'IV.b', 'GURU', '-', '-', '2026-04-15 02:21:40', '2026-04-15 02:21:40'),
+	(96, 98, 'DRA. HENDRAYENTI', '196708211997032002', 'P', NULL, 'IV.b', 'GURU', 'Perumnas Belimbing', '081266372767', '2026-04-15 02:21:39', '2026-07-09 01:50:39'),
+	(97, 99, 'HARNEWI B, S.PD', '197105071996032002', 'P', '1783561638_6a4efda65486d.jpg', 'IV.b', 'GURU', 'Perumnas Belimbing', '081270876413', '2026-04-15 02:21:40', '2026-07-09 01:47:18'),
 	(98, 100, 'GUSMALINDA, S. PD. BIO', '197008141994032001', 'P', '1783540589_6a4eab6dd45ea.jpg', 'IV.b', 'GURU', 'Gurun Laweh', '081261982011', '2026-04-15 02:21:40', '2026-07-08 19:56:29'),
 	(99, 101, 'TUTI HARYATI, S. PD', '196910121998032003', 'P', '1783540444_6a4eaadc83ee0.jpg', 'IV.b', 'GURU', 'Kalumbuk', '081363474492', '2026-04-15 02:21:40', '2026-07-08 19:54:04'),
-	(100, 102, 'NURHAPIZAH, S. Pd', '196611201992032003', 'P', NULL, 'IV.b', 'GURU', '-', '-', '2026-04-15 02:21:40', '2026-04-15 02:21:40'),
-	(101, 103, 'GEMA WIYARTI, M.Pd', '196902151997032002', 'P', NULL, 'IV.b', 'GURU', '-', '-', '2026-04-15 02:21:40', '2026-04-15 02:21:40'),
-	(102, 104, 'MARNIETY, S. Pd', '197106042005012005', 'P', NULL, 'IV.b', 'GURU', '-', '-', '2026-04-15 02:21:41', '2026-04-15 02:21:41'),
+	(100, 102, 'NURHAPIZAH, S. PD', '196611201992032003', 'P', '1783561699_6a4efde3b6e90.jpg', 'IV.b', 'GURU', 'Limau Manis', '085364511031', '2026-04-15 02:21:40', '2026-07-09 01:48:19'),
+	(101, 103, 'GEMA WIYARTI, M.PD', '196902151997032002', 'P', '1783561350_6a4efc861f694.jpg', 'IV.b', 'GURU', 'Perumnas Belimbing', '085365652639', '2026-04-15 02:21:40', '2026-07-09 01:42:30'),
+	(102, 104, 'MARNIETY, S. PD', '197106042005012005', 'P', '1783561584_6a4efd70c6648.jpg', 'IV.b', 'GURU', 'Rimbo Tarok', '081374931209', '2026-04-15 02:21:41', '2026-07-09 01:46:24'),
 	(103, 105, 'DESNIATI, M.PD', '197507302007012013', 'P', '1783540285_6a4eaa3d3e749.png', 'IV.a', 'GURU', 'Kuranji', '082391135001', '2026-04-15 02:21:41', '2026-07-08 19:51:25'),
 	(104, 106, 'FITRI YENTI, S.PD', '197111222006042005', 'P', '1783539486_6a4ea71ea2273.jpg', 'IV.a', 'GURU', 'Piai', '081363993598', '2026-04-15 02:21:41', '2026-07-08 19:38:06'),
 	(105, 107, 'SITI AIDA, S. PD', '196802041993032004', 'P', '1783539847_6a4ea887b0055.jpg', 'IV.a', 'GURU', 'Perumnas Belimbing', '08126751931', '2026-04-15 02:21:41', '2026-07-08 19:44:07'),
-	(106, 108, 'EVINIARTI, S. Ag', '196912031993032003', 'P', NULL, 'IV.a', 'GURU', '-', '-', '2026-04-15 02:21:42', '2026-04-15 02:21:42'),
-	(107, 109, 'ZONDRA, S. Pd', '197403262005011003', 'P', NULL, 'IV.a', 'GURU', '-', '-', '2026-04-15 02:21:42', '2026-04-15 02:21:42'),
+	(106, 108, 'EVINIARTI, S. AG', '196912031993032003', 'P', NULL, 'IV.a', 'GURU', 'Taman Harmonis', '085176711969', '2026-04-15 02:21:42', '2026-07-09 01:40:21'),
+	(107, 109, 'ZONDRA, S. PD', '197403262005011003', 'L', '1783561093_6a4efb857beee.jpg', 'IV.a', 'GURU', 'Lubuk Minturun', '081274261021', '2026-04-15 02:21:42', '2026-07-09 01:38:13'),
 	(108, 110, 'AFRINALITA, S. PD', '196904062006042001', 'P', '1783540776_6a4eac284101e.jpg', 'IV.a', 'GURU', 'Air Pacah', '081363160650', '2026-04-15 02:21:42', '2026-07-08 19:59:36'),
-	(109, 111, 'SRI MULYANI , S.Pd', '197207032005012002', 'P', NULL, 'IV.a', 'GURU', '-', '-', '2026-04-15 02:21:42', '2026-04-15 02:21:42'),
+	(109, 111, 'SRI MULYANI , S.PD', '197207032005012002', 'P', '1783561012_6a4efb3495fa7.jpg', 'IV.a', 'GURU', 'Gunung Pangilun', '085182058358', '2026-04-15 02:21:42', '2026-07-09 01:36:52'),
 	(110, 112, 'HARTATI, S. PD', '197409162000122001', 'P', '1783541079_6a4ead5705ec9.jpg', 'IV.a', 'GURU', 'Perumnas Belimbing', '085364074223', '2026-04-15 02:21:43', '2026-07-08 20:04:39'),
 	(111, 113, 'FIDDIA WATY, S. PD', '197711122005012009', 'P', '1783540510_6a4eab1ed2c30.jpg', 'IV.a', 'GURU', 'Perumnas Belimbing', '085263370148', '2026-04-15 02:21:43', '2026-07-08 19:55:10'),
 	(112, 114, 'FEBRESTI, S. PD', '197302121998032001', 'P', '1783539611_6a4ea79b0a0fc.jpg', 'IV.a', 'GURU', 'Khatib Sulaiman', '081275163787', '2026-04-15 02:21:43', '2026-07-08 19:40:11'),
-	(113, 115, 'USWATUN HASANAH, S.Pd.I M. Pd', '198412182009012013', 'P', NULL, 'III.d', 'GURU', '-', '-', '2026-04-15 02:21:43', '2026-04-15 02:21:43'),
+	(113, 115, 'USWATUN HASANAH, S.PD.I M. PD', '198412182009012013', 'P', '1783561526_6a4efd36cf195.jpg', 'III.d', 'GURU', 'Perumnas Belimbing', '081363325198', '2026-04-15 02:21:43', '2026-07-09 01:45:26'),
 	(114, 116, 'VIVI YASTIKA SARI, S.PD', '196904182005012007', 'P', '1783540722_6a4eabf2a0b27.jpg', 'III.d', 'GURU', 'Tabing', '081277527559', '2026-04-15 02:21:44', '2026-07-08 19:58:42'),
-	(115, 117, 'MARIANIS, S. Ag', '197103222007012014', 'P', NULL, 'III.d', 'GURU', '-', '-', '2026-04-15 02:21:44', '2026-04-15 02:21:44'),
+	(115, 117, 'MARIANIS, S. AG', '197103222007012014', 'P', '1783561466_6a4efcfa0491d.jpg', 'III.d', 'GURU', 'Padang', '085274664680', '2026-04-15 02:21:44', '2026-07-09 01:44:26'),
 	(116, 118, 'MUSNIATI, S. PD', '197406042007012019', 'P', '1783539734_6a4ea816383e7.jpg', 'III.d', 'GURU', 'Kuranji', '081266609529', '2026-04-15 02:21:44', '2026-07-08 19:42:14'),
 	(117, 119, 'SRI MIRAWATI, S. Pd. I', '198008192007102003', 'P', NULL, 'III.d', 'GURU', '-', '-', '2026-04-15 02:21:44', '2026-04-15 02:21:44'),
 	(118, 120, 'NURLAILI, S.HI', '198003082007102003', 'P', '1783541196_6a4eadccc7ee4.jpg', 'III.d', 'GURU', 'Taruko', '081537564467', '2026-04-15 02:21:45', '2026-07-08 20:06:36'),
@@ -217,7 +221,8 @@ REPLACE INTO `guru` (`id`, `id_user`, `nama_guru`, `nip`, `jenis_kelamin`, `foto
 	(165, 167, 'LIA APRIANI, S. PD. I', '199304132025212013', 'P', '1782749722_6a429a1a9cbef.jpg', 'IX', 'GURU', 'Perumnas Belimbing', '082320923477', '2026-04-15 02:21:56', '2026-07-08 18:48:59'),
 	(166, 168, 'RICE MAI YUNI, S.PD', '199505302025212018', 'P', '1782749736_6a429a28897b0.jpg', 'IX', 'GURU', 'Sungai Lareh', '081261025573', '2026-04-15 02:21:56', '2026-07-08 18:49:21'),
 	(167, 169, 'GUSNELI, S.PD', '197202102025212005', 'P', '1782749753_6a429a39d0b17.png', 'IX', 'GURU', 'Kuranji', '082938172837', '2026-04-15 02:21:56', '2026-06-29 16:15:53'),
-	(169, 171, 'JEFRI YULIANDRI, M.PD', '1371095704980009', 'L', '1782749660_6a4299dc84f7f.jpg', NULL, '', 'Sungai Lareh', '082385979381', '2026-06-04 17:56:34', '2026-06-29 16:14:20');
+	(169, 171, 'JEFRI YULIANDRI, M.PD', '1371095704980009', 'L', '1782749660_6a4299dc84f7f.jpg', NULL, '', 'Sungai Lareh', '082385979381', '2026-06-04 17:56:34', '2026-06-29 16:14:20'),
+	(170, 172, 'LAILA RAMADHANI, S.PD', '1371095704980008', 'P', '1783562079_LAILA.jpg', NULL, '', 'Korong Gadang', '089601937361', '2026-07-09 01:54:39', '2026-07-09 01:54:39');
 
 -- Dumping structure for table teamclov_demo_8.jadwal_piket
 CREATE TABLE IF NOT EXISTS `jadwal_piket` (
@@ -233,7 +238,8 @@ CREATE TABLE IF NOT EXISTS `jadwal_piket` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5305 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table teamclov_demo_8.jadwal_piket: ~1.582 rows (approximately)
-REPLACE INTO `jadwal_piket` (`id`, `tanggal`, `id_guru`, `keterangan`, `created_at`, `updated_at`) VALUES
+DELETE FROM `jadwal_piket`;
+INSERT INTO `jadwal_piket` (`id`, `tanggal`, `id_guru`, `keterangan`, `created_at`, `updated_at`) VALUES
 	(3723, '2026-01-02', 102, 'A', '2026-06-28 07:39:45', '2026-06-28 07:39:45'),
 	(3724, '2026-01-02', 113, 'A', '2026-06-28 07:39:45', '2026-06-28 07:39:45'),
 	(3725, '2026-01-02', 144, 'A', '2026-06-28 07:39:45', '2026-06-28 07:39:45'),
@@ -1830,8 +1836,9 @@ CREATE TABLE IF NOT EXISTS `kelas` (
   CONSTRAINT `kelas_id_guru_foreign` FOREIGN KEY (`id_guru`) REFERENCES `guru` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table teamclov_demo_8.kelas: ~33 rows (approximately)
-REPLACE INTO `kelas` (`id`, `nama_kelas`, `id_guru`, `created_at`, `updated_at`) VALUES
+-- Dumping data for table teamclov_demo_8.kelas: ~32 rows (approximately)
+DELETE FROM `kelas`;
+INSERT INTO `kelas` (`id`, `nama_kelas`, `id_guru`, `created_at`, `updated_at`) VALUES
 	(11, 'VII.1', 134, '2026-06-24 00:40:08', '2026-06-28 07:25:01'),
 	(12, 'VII.2', 138, '2026-06-24 00:40:16', '2026-06-24 00:40:16'),
 	(13, 'VII.3', 135, '2026-06-24 00:44:33', '2026-06-24 00:44:33'),
@@ -1875,8 +1882,9 @@ CREATE TABLE IF NOT EXISTS `mapel` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table teamclov_demo_8.mapel: ~15 rows (approximately)
-REPLACE INTO `mapel` (`id`, `nama_mapel`, `created_at`, `updated_at`) VALUES
+-- Dumping data for table teamclov_demo_8.mapel: ~14 rows (approximately)
+DELETE FROM `mapel`;
+INSERT INTO `mapel` (`id`, `nama_mapel`, `created_at`, `updated_at`) VALUES
 	(4, 'AL-QUR\'AN HADIST', '2026-05-16 05:05:39', '2026-05-16 05:05:39'),
 	(5, 'AKIDAH AKHLAK', '2026-05-16 05:05:45', '2026-05-16 05:05:45'),
 	(6, 'FIQIH', '2026-05-16 05:05:50', '2026-05-16 05:05:50'),
@@ -1902,7 +1910,8 @@ CREATE TABLE IF NOT EXISTS `migrations` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table teamclov_demo_8.migrations: ~2 rows (approximately)
-REPLACE INTO `migrations` (`id`, `migration`, `batch`) VALUES
+DELETE FROM `migrations`;
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 	(2, '2026_03_25_075804_create_pikets_table', 1),
 	(3, '2026_04_08_123814_jadwal_piket', 2);
 
@@ -1920,16 +1929,18 @@ CREATE TABLE IF NOT EXISTS `pelanggaran` (
   PRIMARY KEY (`id`),
   KEY `pelanggaran_id_siswa_foreign` (`id_siswa`),
   CONSTRAINT `pelanggaran_id_siswa_foreign` FOREIGN KEY (`id_siswa`) REFERENCES `siswa` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table teamclov_demo_8.pelanggaran: ~6 rows (approximately)
-REPLACE INTO `pelanggaran` (`id`, `created_at`, `updated_at`, `id_siswa`, `jenis_pelanggaran`, `tanggal_pelanggaran`, `poin`, `tindakan_sanksi`, `keterangan`) VALUES
+-- Dumping data for table teamclov_demo_8.pelanggaran: ~7 rows (approximately)
+DELETE FROM `pelanggaran`;
+INSERT INTO `pelanggaran` (`id`, `created_at`, `updated_at`, `id_siswa`, `jenis_pelanggaran`, `tanggal_pelanggaran`, `poin`, `tindakan_sanksi`, `keterangan`) VALUES
 	(6, '2026-06-29 16:36:17', '2026-06-29 16:38:43', 33, 'Berat', '2026-05-11', 3, 'Merokok', 'Dilakukan pemanggilan oleh wali kelas dan guru BK'),
 	(7, '2026-06-29 16:38:18', '2026-07-02 16:37:12', 30, 'Sedang', '2026-05-18', 2, 'Tidak memakai sepatu hitam', 'Sepatu ditahan oleh wakil kesiswaan'),
 	(8, '2026-06-29 16:40:55', '2026-06-29 16:40:55', 15, 'Ringan', '2026-05-18', 1, 'Tidak memakai dasi dan topi', 'Dinasehati'),
 	(9, '2026-06-29 16:42:33', '2026-06-29 16:42:33', 14, 'Berat', '2026-05-25', 3, 'Membawa hp android ke sekolah', 'Dilakukan pemanggilan orang tua'),
 	(10, '2026-06-29 16:43:54', '2026-07-02 16:37:49', 28, 'Berat', '2026-05-26', 3, 'Cabut saat jam pelajaran', 'Dilakukan pemanggilan oleh guru BK'),
-	(11, '2026-07-02 16:00:01', '2026-07-02 16:38:08', 18, 'Sedang', '2026-05-28', 2, 'Merokok', 'Dilakukan pemanggilan oleh guru BK');
+	(11, '2026-07-02 16:00:01', '2026-07-02 16:38:08', 18, 'Sedang', '2026-05-28', 2, 'Merokok', 'Dilakukan pemanggilan oleh guru BK'),
+	(12, '2026-07-09 01:56:27', '2026-07-09 01:56:42', 570, 'Ringan', '2026-07-01', 1, 'Tidak memakai dasi', 'Diberi nasehat untuk memakai pada hari berikutnya');
 
 -- Dumping structure for table teamclov_demo_8.piket
 CREATE TABLE IF NOT EXISTS `piket` (
@@ -1943,6 +1954,7 @@ CREATE TABLE IF NOT EXISTS `piket` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Dumping data for table teamclov_demo_8.piket: ~0 rows (approximately)
+DELETE FROM `piket`;
 
 -- Dumping structure for table teamclov_demo_8.piket_tahunan
 CREATE TABLE IF NOT EXISTS `piket_tahunan` (
@@ -1954,8 +1966,9 @@ CREATE TABLE IF NOT EXISTS `piket_tahunan` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table teamclov_demo_8.piket_tahunan: ~32 rows (approximately)
-REPLACE INTO `piket_tahunan` (`id`, `hari`, `id_guru`, `created_at`, `updated_at`) VALUES
+-- Dumping data for table teamclov_demo_8.piket_tahunan: ~30 rows (approximately)
+DELETE FROM `piket_tahunan`;
+INSERT INTO `piket_tahunan` (`id`, `hari`, `id_guru`, `created_at`, `updated_at`) VALUES
 	(47, 1, 106, '2026-06-03 16:50:49', '2026-06-03 16:50:49'),
 	(48, 1, 109, '2026-06-03 16:51:00', '2026-06-03 16:51:00'),
 	(49, 1, 120, '2026-06-03 16:51:11', '2026-06-03 16:51:11'),
@@ -2010,10 +2023,11 @@ CREATE TABLE IF NOT EXISTS `rekap_piket` (
   KEY `rekap_piket_piket_type_piket_id_index` (`piket_type`,`piket_id`),
   CONSTRAINT `rekap_piket_kelas_id_foreign` FOREIGN KEY (`kelas_id`) REFERENCES `kelas` (`id`),
   CONSTRAINT `rekap_piket_mapel_id_foreign` FOREIGN KEY (`mapel_id`) REFERENCES `mapel` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table teamclov_demo_8.rekap_piket: ~27 rows (approximately)
-REPLACE INTO `rekap_piket` (`id`, `tanggal`, `kelas_id`, `mapel_id`, `piket_type`, `piket_id`, `terlambat`, `jam_ke`, `status`, `keterangan`, `lampiran`, `created_at`, `updated_at`) VALUES
+-- Dumping data for table teamclov_demo_8.rekap_piket: ~26 rows (approximately)
+DELETE FROM `rekap_piket`;
+INSERT INTO `rekap_piket` (`id`, `tanggal`, `kelas_id`, `mapel_id`, `piket_type`, `piket_id`, `terlambat`, `jam_ke`, `status`, `keterangan`, `lampiran`, `created_at`, `updated_at`) VALUES
 	(1, '2026-06-24', NULL, NULL, 'App\\Models\\SiswaModel', 8, 0, '0', 'S', NULL, NULL, '2026-06-24 15:16:55', '2026-06-24 15:16:55'),
 	(2, '2026-06-24', NULL, NULL, 'App\\Models\\SiswaModel', 8, 0, '0', 'I', 'Izin', NULL, '2026-06-24 15:17:43', '2026-06-24 15:17:43'),
 	(3, '2026-06-25', NULL, NULL, 'App\\Models\\SiswaModel', 8, 0, '0', 'S', 'sakit', NULL, '2026-06-25 12:49:53', '2026-06-25 12:49:53'),
@@ -2027,7 +2041,7 @@ REPLACE INTO `rekap_piket` (`id`, `tanggal`, `kelas_id`, `mapel_id`, `piket_type
 	(11, '2026-05-11', NULL, 6, 'App\\Models\\GuruModel', 160, 0, '0', 'I', 'Meninggalkan tugas pada guru piket', NULL, '2026-06-29 16:50:43', '2026-06-29 16:50:43'),
 	(12, '2026-05-11', 11, 8, 'App\\Models\\SiswaModel', 21, 0, '0', 'S', 'Sakit', NULL, '2026-06-29 16:51:53', '2026-06-29 16:51:53'),
 	(13, '2026-05-11', 11, 16, 'App\\Models\\SiswaModel', 17, 0, '0', 'I', 'Izin', NULL, '2026-06-29 16:52:38', '2026-06-29 16:52:38'),
-	(14, '2026-07-02', NULL, 17, 'App\\Models\\GuruModel', 163, 0, '0', 'S', 'Ada guru pengganti', '1783007157_6a4687b5a02b9.pdf', '2026-07-02 15:45:58', '2026-07-02 15:45:58'),
+	(14, '2026-07-02', 12, 17, 'App\\Models\\GuruModel', 163, 0, '1-3', 'S', 'Ada guru pengganti', '1783007157_6a4687b5a02b9.pdf', '2026-07-02 15:45:58', '2026-07-08 20:47:18'),
 	(15, '2026-07-02', 40, 11, 'App\\Models\\SiswaModel', 33, 0, '1', 'S', 'Sakit', '1783007226_6a4687fa9b017.pdf', '2026-07-02 15:47:07', '2026-07-02 15:47:07'),
 	(19, '2026-07-03', NULL, 13, 'App\\Models\\GuruModel', 131, 0, '2', 'I', 'Izin', '1783082830_6a47af4ea3aad.pdf', '2026-07-03 12:47:10', '2026-07-03 12:54:30'),
 	(20, '2026-07-03', 12, 12, 'App\\Models\\SiswaModel', 24, 0, '4', 'T', 'Izin', '1783082895_6a47af8fec663.pdf', '2026-07-03 12:48:15', '2026-07-03 13:14:59'),
@@ -2036,11 +2050,10 @@ REPLACE INTO `rekap_piket` (`id`, `tanggal`, `kelas_id`, `mapel_id`, `piket_type
 	(23, '2026-07-05', 11, 14, 'App\\Models\\SiswaModel', 18, 0, '1', 'S', 'Sakit', '1783256680_6a4a5668dd808.pdf', '2026-07-05 13:04:41', '2026-07-05 13:04:41'),
 	(24, '2026-07-07', 22, 5, 'App\\Models\\GuruModel', 157, 0, '1-3', 'S', NULL, NULL, '2026-07-07 05:47:29', '2026-07-07 05:47:29'),
 	(25, '2026-06-03', 12, 17, 'App\\Models\\GuruModel', 163, 0, '1-3', 'S', 'Ada guru pengganti', '1783480025_6a4dbed9287f0.pdf', '2026-07-08 03:07:06', '2026-07-08 03:07:06'),
-	(28, '2026-06-03', NULL, 11, 'App\\Models\\SiswaModel', 33, 0, '4-6', 'S', 'Sakit', '1783480292_6a4dbfe4cd847.pdf', '2026-07-08 03:11:33', '2026-07-08 03:11:33'),
 	(30, '2026-07-08', 11, 4, 'App\\Models\\SiswaModel', 17, 0, '1-2', 'S', NULL, NULL, '2026-07-08 04:53:17', '2026-07-08 04:53:17'),
 	(31, '2026-07-06', 11, 14, 'App\\Models\\GuruModel', 166, 0, '1-3', 'S', 'Ada guru pengganti (Jefri Yuliandri)', '1783538867_6a4ea4b30df90.pdf', '2026-07-08 19:27:47', '2026-07-08 19:27:47'),
 	(32, '2026-07-06', 11, 8, 'App\\Models\\SiswaModel', 6, 0, '4-6', 'S', 'Sakit', '1783538932_6a4ea4f4557a3.pdf', '2026-07-08 19:28:52', '2026-07-08 19:28:52'),
-	(33, '2026-07-09', NULL, NULL, 'App\\Models\\GuruModel', 87, 0, NULL, 'H', 'Absen masuk melalui aplikasi', NULL, '2026-07-08 19:42:19', '2026-07-08 19:42:19');
+	(34, '2026-06-03', 40, 11, 'App\\Models\\SiswaModel', 33, 0, '4-6', 'S', 'Sakit', '1783564231_6a4f07c73317f.pdf', '2026-07-09 02:30:31', '2026-07-09 02:30:31');
 
 -- Dumping structure for table teamclov_demo_8.siswa
 CREATE TABLE IF NOT EXISTS `siswa` (
@@ -2053,10 +2066,11 @@ CREATE TABLE IF NOT EXISTS `siswa` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `siswa_nisn_unique` (`nisn`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=602 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table teamclov_demo_8.siswa: ~30 rows (approximately)
-REPLACE INTO `siswa` (`id`, `nama_siswa`, `nisn`, `jenis_kelamin`, `id_kelas`, `created_at`, `updated_at`) VALUES
+-- Dumping data for table teamclov_demo_8.siswa: ~481 rows (approximately)
+DELETE FROM `siswa`;
+INSERT INTO `siswa` (`id`, `nama_siswa`, `nisn`, `jenis_kelamin`, `id_kelas`, `created_at`, `updated_at`) VALUES
 	(6, 'ALESHA ZAHRA', '0123929832', 'P', 11, '2026-06-24 01:04:27', '2026-06-24 01:04:27'),
 	(9, 'ALIFYA KHAIRUNNISA', '0124028080', 'P', 11, '2026-06-29 16:18:24', '2026-06-29 16:18:24'),
 	(10, 'AQIRA QIANA PUTRI', '3128574493', 'P', 11, '2026-06-29 16:19:25', '2026-06-29 16:19:25'),
@@ -2584,46 +2598,46 @@ CREATE TABLE IF NOT EXISTS `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=173 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table teamclov_demo_8.users: ~82 rows (approximately)
-REPLACE INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
+-- Dumping data for table teamclov_demo_8.users: ~81 rows (approximately)
+DELETE FROM `users`;
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
 	(1, 'Admin', 'admin@gmail.com', NULL, '$2y$12$2MVLtdWaWVusG1KKOxuUdOG5peACsErLFisoLPus9AIXGG6Ga/1Di', '["admin"]', NULL, '2026-01-28 09:09:47', '2026-01-28 09:09:47'),
 	(2, 'Guru', 'guru@gmail.com', NULL, '$2y$12$tfVQRVeJKEXuIzO7RlkLxObF5jLjFMvgHaqGIGLlwkkw3noRCryJq', '["guru_mapel"]', NULL, '2026-01-28 09:09:47', '2026-01-28 09:09:47'),
 	(4, 'DINY MAULINA', 'viradiana40@gmail.com', NULL, '$2y$12$bEBmHh2K3Vg9w2OYuM8akeOP8Ihtx8BDq3C7kvpAqly8XKEx1Dz8O', '["guru_mapel"]', NULL, '2026-04-06 00:52:00', '2026-04-06 00:52:00'),
-	(89, 'NOPRIZAL, M. Pd', 'guru69def6316ae3d@gmail.com', NULL, '$2y$12$f09dY58R3GThZ0.OmjqWw.q1Ju2GOcc/1ajJfECLhteLLvdbd9hDi', '["admin","guru_piket","guru_mapel","guru_bk"]', NULL, '2026-04-14 19:21:37', '2026-06-28 08:51:44'),
-	(91, 'RIZA PUSPITA SARI, S. Pd', 'guru69def631e384b@gmail.com', NULL, '$2y$12$uy7G.RW07aRL4EhlRLLhS.77vgIPCDmKhX9F5b9AYcfkZUIsV3.M2', '["guru_mapel"]', NULL, '2026-04-14 19:21:38', '2026-04-14 19:21:38'),
+	(89, 'NOPRIZAL, M. Pd', 'noprizal@gmail.com', NULL, '$2y$12$f09dY58R3GThZ0.OmjqWw.q1Ju2GOcc/1ajJfECLhteLLvdbd9hDi', '["admin","guru_piket","guru_mapel","guru_bk"]', NULL, '2026-04-14 19:21:37', '2026-07-09 01:41:34'),
+	(91, 'RIZA PUSPITA SARI, S. Pd', 'rizapuspitasari@gmail.com', NULL, '$2y$12$uy7G.RW07aRL4EhlRLLhS.77vgIPCDmKhX9F5b9AYcfkZUIsV3.M2', '["guru_mapel"]', NULL, '2026-04-14 19:21:38', '2026-07-09 01:51:30'),
 	(92, 'ABRIS TRI PUTRA, S.Si', 'abristriputra@gmail.com', NULL, '$2y$12$FkHUp4E7TsrnTHnjS/uRY.KxAfNWrK9eMmZJsdSRs.rsOLyAjSAv6', '["guru_mapel"]', NULL, '2026-04-14 19:21:38', '2026-07-08 19:01:17'),
-	(93, 'ADRISMAN, S. Pd.I', 'guru69def63261a9e@gmail.com', NULL, '$2y$12$4pjHU2q0jS/SXaWE6Q6lwegrf3p1n6FFBLJTl6aeD0vNXDC5fctmq', '["guru_mapel"]', NULL, '2026-04-14 19:21:38', '2026-04-14 19:21:38'),
-	(94, 'RAHMATULLAH, S. Pd, M.Pd', 'guru69def632995d2@gmail.com', NULL, '$2y$12$nwiS7tHD8WktDcOZ5Ih4CecoxRjxqsbKjxqTvX.PZH6SNVE.9uVvW', '["guru_mapel"]', NULL, '2026-04-14 19:21:38', '2026-04-14 19:21:38'),
-	(95, 'FIFIAN RUBIANTI N, S.Ag', 'guru69def632d0717@gmail.com', NULL, '$2y$12$vH6DegKlH2wzFMTq7gIvUeayFjNzUeClX4QifMqZ2L5muprTTnhmS', '["guru_mapel"]', NULL, '2026-04-14 19:21:39', '2026-04-14 19:21:39'),
+	(93, 'ADRISMAN, S. Pd.I', 'adrisman@gmail.com', NULL, '$2y$12$4pjHU2q0jS/SXaWE6Q6lwegrf3p1n6FFBLJTl6aeD0vNXDC5fctmq', '["guru_mapel"]', NULL, '2026-04-14 19:21:38', '2026-07-09 01:52:14'),
+	(94, 'RAHMATULLAH, S. Pd, M.Pd', 'rahmatullah@gmail.com', NULL, '$2y$12$nwiS7tHD8WktDcOZ5Ih4CecoxRjxqsbKjxqTvX.PZH6SNVE.9uVvW', '["guru_mapel"]', NULL, '2026-04-14 19:21:38', '2026-07-09 01:53:21'),
 	(96, 'HERLINA,S.Pd', 'herlina@gmail.com', NULL, '$2y$12$Fu/zXF7guN4CnoubO/zzpOMdkE0v6J9AnuXCr2S0KQfIXVh7ppaYO', '["wali_kelas"]', NULL, '2026-04-14 19:21:39', '2026-07-08 19:43:03'),
 	(97, 'YUSMAINI, S.Pd', 'yusmaini@gmail.com', NULL, '$2y$12$zXIODduyrT.7cqUKm25xGespO1oVR6Q4Wfw00PJ6wTPlBkpCJECge', '["wali_kelas"]', NULL, '2026-04-14 19:21:39', '2026-07-08 19:39:01'),
-	(98, 'Dra. HENDRAYENTI', 'guru69def6338a173@gmail.com', NULL, '$2y$12$c3LELqWP78bG7lpfoegBo.ZZ45ULsPdbcAPzYcZZ2keq0kDb1sTVy', '["guru_mapel"]', NULL, '2026-04-14 19:21:39', '2026-04-14 19:21:39'),
-	(99, 'HARNEWI B, S.Pd', 'guru69def633c20ec@gmail.com', NULL, '$2y$12$WowStYDRlBGG7XKB.Ti5zuIauXSvkJFBW1b70fU7Pbc5M8eXmohKW', '["guru_mapel"]', NULL, '2026-04-14 19:21:40', '2026-04-14 19:21:40'),
+	(98, 'Dra. HENDRAYENTI', 'hendrayenti@gmail.com', NULL, '$2y$12$c3LELqWP78bG7lpfoegBo.ZZ45ULsPdbcAPzYcZZ2keq0kDb1sTVy', '["guru_mapel"]', NULL, '2026-04-14 19:21:39', '2026-07-09 01:50:39'),
+	(99, 'HARNEWI B, S.Pd', 'harnewi@gmail.com', NULL, '$2y$12$WowStYDRlBGG7XKB.Ti5zuIauXSvkJFBW1b70fU7Pbc5M8eXmohKW', '["guru_mapel"]', NULL, '2026-04-14 19:21:40', '2026-07-09 01:47:18'),
 	(100, 'GUSMALINDA, S. Pd. BIO', 'gusmalinda@gmail.com', NULL, '$2y$12$JyvEXxX0jSsgj.9H9HF/Q.ziH4YTtmB8LKRO6PNwNMTAq.xiGloH6', '["wali_kelas"]', NULL, '2026-04-14 19:21:40', '2026-07-08 19:56:29'),
 	(101, 'TUTI HARYATI, S. Pd', 'tutiharyati@gmail.com', NULL, '$2y$12$Dh0dbxQ1ZsinJ0pav1o2LOdFxzG9IunjWszSOcVzP8A70Ej.nllvO', '["wali_kelas"]', NULL, '2026-04-14 19:21:40', '2026-07-08 19:54:04'),
-	(102, 'NURHAPIZAH, S. Pd', 'guru69def63477639@gmail.com', NULL, '$2y$12$Bx1qit1ewyILp2cbATdUveVXg6PgBX..8zPClwo7xs5mJOO2SN3.C', '["guru_mapel"]', NULL, '2026-04-14 19:21:40', '2026-04-14 19:21:40'),
-	(103, 'GEMA WIYARTI, M.Pd', 'guru69def634ad217@gmail.com', NULL, '$2y$12$9OWxPkDi9cF6cA6j6NS0B.4yv0E90To/WiTv1yfRlD2AhczOvT6aS', '["guru_mapel"]', NULL, '2026-04-14 19:21:40', '2026-04-14 19:21:40'),
-	(104, 'MARNIETY, S. Pd', 'guru69def634e2c88@gmail.com', NULL, '$2y$12$I8XKzhG.YwXMicKU0SP.c.JnYLZHatcdeSzpqjZY7KAkc9TXSuiJu', '["guru_mapel"]', NULL, '2026-04-14 19:21:41', '2026-04-14 19:21:41'),
+	(102, 'NURHAPIZAH, S. Pd', 'nurhapizah@gmail.com', NULL, '$2y$12$Bx1qit1ewyILp2cbATdUveVXg6PgBX..8zPClwo7xs5mJOO2SN3.C', '["guru_mapel"]', NULL, '2026-04-14 19:21:40', '2026-07-09 01:48:19'),
+	(103, 'GEMA WIYARTI, M.Pd', 'gemawiyarti@gmail.com', NULL, '$2y$12$9OWxPkDi9cF6cA6j6NS0B.4yv0E90To/WiTv1yfRlD2AhczOvT6aS', '["guru_piket"]', NULL, '2026-04-14 19:21:40', '2026-07-09 01:42:29'),
+	(104, 'MARNIETY, S. Pd', 'marniety@gmail.com', NULL, '$2y$12$I8XKzhG.YwXMicKU0SP.c.JnYLZHatcdeSzpqjZY7KAkc9TXSuiJu', '["guru_mapel"]', NULL, '2026-04-14 19:21:41', '2026-07-09 01:46:23'),
 	(105, 'DESNIATI, M.Pd', 'desniati@gmail.com', NULL, '$2y$12$9nuUCnKDbP.25zpnw/XLQewfSiJ7kRhwqwGDiLWq.VbK2Jcornr8y', '["wali_kelas"]', NULL, '2026-04-14 19:21:41', '2026-07-08 19:51:25'),
 	(106, 'FITRI YENTI, S.Pd', 'fitriyenti@gmail.com', NULL, '$2y$12$BOcr2PYTY/DmlTB5qdoeiO.4h9.mQfMPnTNNHJgikRVaazn5LxL1G', '["wali_kelas"]', NULL, '2026-04-14 19:21:41', '2026-07-08 19:38:06'),
 	(107, 'SITI AIDA, S. Pd', 'sitiaida@gmail.com', NULL, '$2y$12$iE.kBG4f0CB5Vi/Z3.xUAuf9FjANzwTCsWciZ8247e4TEJO6.u.fu', '["wali_kelas"]', NULL, '2026-04-14 19:21:41', '2026-07-08 19:44:07'),
-	(108, 'EVINIARTI, S. Ag', 'guru69def635d1518@gmail.com', NULL, '$2y$12$V.Utad5VagJo7PvWeoQteevijGklcB7JK7TffP2wQ.PQwtCcJi1xy', '["guru_mapel"]', NULL, '2026-04-14 19:21:42', '2026-04-14 19:21:42'),
-	(109, 'ZONDRA, S. Pd', 'guru69def63618751@gmail.com', NULL, '$2y$12$l3RL42mC0PTqI1BPvGPCDOVHKHkJx0tnuPFAf37F4vbAKurNysgTq', '["guru_mapel"]', NULL, '2026-04-14 19:21:42', '2026-04-14 19:21:42'),
+	(108, 'EVINIARTI, S. Ag', 'eviniarti@gmail.com', NULL, '$2y$12$V.Utad5VagJo7PvWeoQteevijGklcB7JK7TffP2wQ.PQwtCcJi1xy', '["guru_piket"]', NULL, '2026-04-14 19:21:42', '2026-07-09 01:40:21'),
+	(109, 'ZONDRA, S. Pd', 'zondra@gmail.com', NULL, '$2y$12$l3RL42mC0PTqI1BPvGPCDOVHKHkJx0tnuPFAf37F4vbAKurNysgTq', '["guru_bk"]', NULL, '2026-04-14 19:21:42', '2026-07-09 01:38:13'),
 	(110, 'AFRINALITA, S. Pd', 'afrinalita@gmail.com', NULL, '$2y$12$CqaICoNGIZCj3lw0QY0sy.b/K/gknuTBMU4xZG6NL.2ur/i0p/SZG', '["wali_kelas"]', NULL, '2026-04-14 19:21:42', '2026-07-08 19:59:36'),
-	(111, 'SRI MULYANI , S.Pd', 'guru69def63688e3f@gmail.com', NULL, '$2y$12$zjAoKGTwQFiupJzt7K6ATOp68p9TsAKZqJ29jbkP6YB65gbo5s6fa', '["guru_mapel"]', NULL, '2026-04-14 19:21:42', '2026-04-14 19:21:42'),
+	(111, 'SRI MULYANI , S.Pd', 'srimulyani@gmail.com', NULL, '$2y$12$zjAoKGTwQFiupJzt7K6ATOp68p9TsAKZqJ29jbkP6YB65gbo5s6fa', '["guru_bk"]', NULL, '2026-04-14 19:21:42', '2026-07-09 01:36:52'),
 	(112, 'HARTATI, S. Pd', 'hartati@gmail.com', NULL, '$2y$12$qiZjM5yZw6nnbaLMHxsU7eLUgLzsE9jaJPQOwjryP51RwOGIKTbdO', '["wali_kelas"]', NULL, '2026-04-14 19:21:43', '2026-07-08 20:04:39'),
 	(113, 'FIDDIA WATY, S. Pd', 'fiddiawaty@gmail.com', NULL, '$2y$12$2Wb98h5WR0oUpYu8Og7V9O8Lidlp/FMCUzG9iDL/xetXjLVKkJdyK', '["wali_kelas"]', NULL, '2026-04-14 19:21:43', '2026-07-08 19:55:10'),
 	(114, 'FEBRESTI, S. Pd', 'febresti@gmail.com', NULL, '$2y$12$KpQ6A.B6f3QKEblA/xOXheTkxvJEoEd0Q3Sngb5HSx.CjA4XC0..e', '["wali_kelas"]', NULL, '2026-04-14 19:21:43', '2026-07-08 19:40:20'),
-	(115, 'USWATUN HASANAH, S.Pd.I M. Pd', 'guru69def63776417@gmail.com', NULL, '$2y$12$FWoPY8Rt/8j3rt9nU7yCHeooK6GEZbQVRJrCh4SrbzFyhCCeumniW', '["guru_mapel"]', NULL, '2026-04-14 19:21:43', '2026-04-14 19:21:43'),
+	(115, 'USWATUN HASANAH, S.Pd.I M. Pd', 'uswatunhasanah@gmail.com', NULL, '$2y$12$FWoPY8Rt/8j3rt9nU7yCHeooK6GEZbQVRJrCh4SrbzFyhCCeumniW', '["guru_mapel"]', NULL, '2026-04-14 19:21:43', '2026-07-09 01:45:26'),
 	(116, 'VIVI YASTIKA SARI, S.Pd', 'viviyastikasari@gmail.com', NULL, '$2y$12$SHHGFZin2S.ieBpxUXmM1.Nt9hInSsXTh9/sH4HRTYBtS4F4j/J56', '["wali_kelas"]', NULL, '2026-04-14 19:21:44', '2026-07-08 19:58:42'),
-	(117, 'MARIANIS, S. Ag', 'guru69def63808918@gmail.com', NULL, '$2y$12$Wy5ALL61bSTrIGfrpfkIYurbC8fKsU92iPPxM4lS/lgiczPcbfrvO', '["guru_mapel"]', NULL, '2026-04-14 19:21:44', '2026-04-14 19:21:44'),
+	(117, 'MARIANIS, S. Ag', 'marianis@gmail.com', NULL, '$2y$12$Wy5ALL61bSTrIGfrpfkIYurbC8fKsU92iPPxM4lS/lgiczPcbfrvO', '["guru_mapel"]', NULL, '2026-04-14 19:21:44', '2026-07-09 01:44:26'),
 	(118, 'MUSNIATI, S. Pd', 'musniati@gmail.com', NULL, '$2y$12$v28P8PITbYpPDN3ykKWVze/LHeE1cDIFOJPwuXs.xkJUj32jcTz3W', '["wali_kelas"]', NULL, '2026-04-14 19:21:44', '2026-07-08 19:42:14'),
 	(119, 'SRI MIRAWATI, S. Pd. I', 'guru69def63885bfc@gmail.com', NULL, '$2y$12$o2Q0d0WvZHqPwVv8KLt7oenQ3GfLXHZ22GExS6NuAiHbRlXedAkN.', '["guru_mapel"]', NULL, '2026-04-14 19:21:44', '2026-04-14 19:21:44'),
 	(120, 'NURLAILI, S.HI', 'nurlaili@gmail.com', NULL, '$2y$12$1EWYe.4jyXxn3/gA6ZT2OO3hyq36Ai9rW0GY0Ng8hCliT5xO50avy', '["guru_mapel"]', NULL, '2026-04-14 19:21:45', '2026-07-08 20:06:36'),
 	(121, 'ASNELI WARDINI, SHI, S. Pd. I', 'asneliwardini@gmail.com', NULL, '$2y$12$y.Okmc8w01/Sw3RQW1PoeO8ttn7JcN/O3m8NsAbNdS2srw7Vnesz6', '["guru_mapel"]', NULL, '2026-04-14 19:21:45', '2026-07-08 20:07:29'),
-	(122, 'ZALMI, S. Pd', 'zalmi@gmail.com', NULL, '$2y$12$jv8yPGPBTjSAOaP7yGxVKePnMre.XocaLOY2c0cd9rdBcy.tXiM2G', '["guru_mapel"]', NULL, '2026-04-14 19:21:45', '2026-07-08 20:08:17'),
+	(122, 'ZALMI, S. Pd', 'zalmi@gmail.com', NULL, '$2y$12$jv8yPGPBTjSAOaP7yGxVKePnMre.XocaLOY2c0cd9rdBcy.tXiM2G', '["guru_piket"]', NULL, '2026-04-14 19:21:45', '2026-07-09 01:40:53'),
 	(123, 'GUSNITA, S. Ag', 'gusnita@gmail.com', NULL, '$2y$12$5CoclWnD8WTZkylJQDiWUuXj4eyzuOtsqmKqXQb4wBSj3GnXk5Dxy', '["guru_mapel"]', NULL, '2026-04-14 19:21:45', '2026-07-08 20:09:49'),
 	(124, 'NURIDA, S. Pd', 'nurida@gmail.com', NULL, '$2y$12$WXUAQ8k8kMZ5ek6wr5fgiutDOD8/YFfGn4ahSAqn88btXIl3Njlga', '["wali_kelas"]', NULL, '2026-04-14 19:21:45', '2026-07-08 19:36:55'),
 	(125, 'RAHMI ARFIYENTI, S. Pd', 'rahmiarfiyenti@gmail.com', NULL, '$2y$12$1QOlO6ggLeZsFaJZjR7i8.adj/N3fH0ZNyXMQTe20kflnjL8LQWZy', '["wali_kelas"]', NULL, '2026-04-14 19:21:46', '2026-07-08 19:34:33'),
@@ -2644,7 +2658,7 @@ REPLACE INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `r
 	(140, 'ELIN NOFIA JUMESA, S.Pd', 'elinnofiajumesa@gmail.com', NULL, '$2y$12$d05FkbzWwzpKhXVXynO0xuAycKiNn722uvbblcmcnDT7RTVJV3n5.', '["wali_kelas"]', NULL, '2026-04-14 19:21:49', '2026-07-08 20:02:03'),
 	(141, 'BENNY WAHYUDI, S.KOM', 'bennywahyudi@gmail.com', NULL, '$2y$12$7eyV56YQiNEUnXLJpZHI8.G2SsxpwoX1QVPGvh.CD00FSVGo.il1y', '["guru_mapel"]', NULL, '2026-04-14 19:21:49', '2026-07-08 19:10:46'),
 	(142, 'ROZA IDA YANI, S.Pd', 'rozaidayani@gmail.com', NULL, '$2y$12$KcNlmNj1YuXvqKP4e.R/euAob7s7w7JINnv5ZQR6G1Pu0XY9I8t66', '["wali_kelas"]', NULL, '2026-04-14 19:21:50', '2026-07-08 19:39:11'),
-	(143, 'IMALDA IFRIANI, S.Pd.I', 'imaldaifriani@gmail.com', NULL, '$2y$12$qnGMIhDBX7JngAO365gF8u3ylYxG7hOsv3yr6DqGkVbdv5wGGBPIy', '["guru_mapel"]', NULL, '2026-04-14 19:21:50', '2026-07-08 19:04:56'),
+	(143, 'IMALDA IFRIANI, S.Pd.I', 'imaldaifriani@gmail.com', NULL, '$2y$12$qnGMIhDBX7JngAO365gF8u3ylYxG7hOsv3yr6DqGkVbdv5wGGBPIy', '["guru_bk"]', NULL, '2026-04-14 19:21:50', '2026-07-09 01:38:29'),
 	(144, 'ALMASRI PUTRA, S.Pd', 'almasriputra@gmail.com', NULL, '$2y$12$Pt7sYauLzhUZOjOBWeJaleYGgq.FQCOPjaV5c11vPrPUnmll8KWmG', '["wali_kelas"]', NULL, '2026-04-14 19:21:50', '2026-07-08 20:02:32'),
 	(145, 'TRI SUCI PRIMA AMELIA PUTRI, S.Pd', 'trisuciprimaamelia@gmail.com', NULL, '$2y$12$5rz3w64AaG1.KdgalzFf.OT.lRDFelEQT4aslT4jCGnbGFfxgT0AC', '["wali_kelas"]', NULL, '2026-04-14 19:21:50', '2026-07-08 19:51:37'),
 	(146, 'NITTO WILIAM, S.KOM', 'nittowiliam@gmail.com', NULL, '$2y$12$Y0mjjeZNFUlIJY.uQjqZcuO0YU2pvmMrSC11uMaAQZXAyYpLOwMwu', '["guru_mapel"]', NULL, '2026-04-14 19:21:50', '2026-07-08 19:07:38'),
@@ -2655,21 +2669,22 @@ REPLACE INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `r
 	(151, 'AFRILINITA, S.Pd', 'afrilinita@gmail.com', NULL, '$2y$12$DP3.DqF.M1EEQJ0O7K0BGOJ3bKCbXa7TErFBl2bbuYJtZHrYhe/Ju', '["guru_mapel"]', NULL, '2026-04-14 19:21:52', '2026-07-08 18:57:29'),
 	(152, 'SILVIA, S.Pd', 'silvia@gmail.com', NULL, '$2y$12$/xhaxXH/UE40PXBIKzVKV.H8LmfG871mVWOAItlezSWZM79Q2UI1W', '["guru_mapel"]', NULL, '2026-04-14 19:21:52', '2026-07-08 18:58:21'),
 	(153, 'IQBAL ARIF, S.Pd', 'iqbalarif@gmail.com', NULL, '$2y$12$bJUVcYNQlye9lvf5zC0UnO9IpGijIr36TBzv9u0BOVgXuB22zJ11S', '["guru_mapel"]', NULL, '2026-04-14 19:21:52', '2026-07-08 18:59:00'),
-	(156, 'MONDRA SEPNITON, SS', 'mondrasepniton@gmail.com', NULL, '$2y$12$NhcchRUVNALBuC7lkptdeut/5qK3NytCAcUybXWrH6ODq906D8AHe', '["guru_mapel"]', NULL, '2026-04-14 19:21:53', '2026-07-08 18:53:02'),
+	(156, 'MONDRA SEPNITON, SS', 'mondrasepniton@gmail.com', NULL, '$2y$12$NhcchRUVNALBuC7lkptdeut/5qK3NytCAcUybXWrH6ODq906D8AHe', '["guru_piket"]', NULL, '2026-04-14 19:21:53', '2026-07-09 01:40:43'),
 	(157, 'DONA GUSTIA, S. Pd. I', 'donagustia@gmail.com', NULL, '$2y$12$vdMKwqbI9lrzzyTbPFT9COOj4N5qn5wRVB7hVPOZF4gcMr02/Ny8K', '["wali_kelas"]', NULL, '2026-04-14 19:21:53', '2026-07-08 20:02:51'),
 	(158, 'ISHAQ HALIM, S. Ag', 'ishaqhalim@gmail.com', NULL, '$2y$12$FfmgUP/V9kfiHUy/TqSA1.4xbYaWETbWCf2GhXTxvvcU6IqKPqpue', '["guru_mapel"]', NULL, '2026-04-14 19:21:53', '2026-07-08 18:56:27'),
 	(159, 'IHSAN, M.Pd', 'ihsan@gmail.com', NULL, '$2y$12$7VeNGmVBbjf.zrHTH6kbUuxS9ONspu62UktMHeo6zRaGHCON4SPZe', '["guru_mapel"]', NULL, '2026-04-14 19:21:54', '2026-07-08 18:49:58'),
-	(160, 'DILLA OKTAVIANA, S. Pd', 'dillaoktaviana@gmail.com', NULL, '$2y$12$RgM9u6LqClkA1SB5cp4CB.E2yCH4ZW3c.POcfnQneYHXjo6.x0AtK', '["guru_mapel"]', NULL, '2026-04-14 19:21:54', '2026-07-08 18:51:10'),
+	(160, 'DILLA OKTAVIANA, S. Pd', 'dillaoktaviana@gmail.com', NULL, '$2y$12$RgM9u6LqClkA1SB5cp4CB.E2yCH4ZW3c.POcfnQneYHXjo6.x0AtK', '["guru_bk"]', NULL, '2026-04-14 19:21:54', '2026-07-09 01:38:20'),
 	(161, 'SYUKRIADI, SS', 'syukriadi@gmail.com', NULL, '$2y$12$.aAXb0j0Rm6G/PQSf5u.1uWnKrMEQrzSfo8DtmHTLjaPEEdzW2d7a', '["guru_mapel"]', NULL, '2026-04-14 19:21:54', '2026-07-08 18:52:10'),
 	(162, 'SYAFRIZAL, S. Pd. I', 'syafrizal@gmail.com', NULL, '$2y$12$dhmuTB8wgQ2H51J5aci5yO2RNXLv6FNSnY9yv8Y9apXbiWWN60.0G', '["guru_mapel"]', NULL, '2026-04-14 19:21:55', '2026-07-08 18:35:28'),
 	(163, 'RANI WAHYUNI, S. Pd', 'raniwahyuni@gmail.com', NULL, '$2y$12$38EFgNZN7jFPEM7mrL9CfOW/d4Ebtv6K9.kVUGdZt6e6fVMELYZJm', '["wali_kelas"]', NULL, '2026-04-14 19:21:55', '2026-07-08 18:46:04'),
 	(164, 'YUTNITA, S.Pd', 'yutnita@gmail.com', NULL, '$2y$12$J7AtGkIad6Z9t.eQiaxVj.VH8mcQM4ss8VTC./d.IWVXPkz28IZrK', '["wali_kelas","guru_mapel"]', NULL, '2026-04-14 19:21:55', '2026-07-08 18:46:47'),
 	(165, 'DORI EKA PUTRA, S.Pd', 'doriekaputra@gmail.com', NULL, '$2y$12$7WBzD7lWeD5L7Bz3XD35uupW3lYqHaX55OHv.wQCCMfWRDslfAe1q', '["guru_mapel"]', NULL, '2026-04-14 19:21:55', '2026-07-08 18:47:43'),
-	(166, 'MUHAMMAD IKHSAN, S.Pd', 'muhammadikhsan@gmail.com', NULL, '$2y$12$AJCd48LahHTtuq/O0rlRXOhAoxtSK6mVRAlMERV9mPyFtWAJAUh9y', '["guru_mapel","guru_bk"]', NULL, '2026-04-14 19:21:56', '2026-06-28 06:57:10'),
+	(166, 'MUHAMMAD IKHSAN, S.Pd', 'muhammadikhsan@gmail.com', NULL, '$2y$12$AJCd48LahHTtuq/O0rlRXOhAoxtSK6mVRAlMERV9mPyFtWAJAUh9y', '["guru_bk"]', NULL, '2026-04-14 19:21:56', '2026-07-09 01:35:21'),
 	(167, 'LIA APRIANI, S. Pd. I', 'liaapriani@gmail.com', NULL, '$2y$12$WaRDiY1Obx55LAblcO4z6uLgI0DjgY0ltQiUlP0nqHL0ojliKaCM6', '["wali_kelas"]', NULL, '2026-04-14 19:21:56', '2026-07-05 13:25:45'),
 	(168, 'RICE MAI YUNI, S.Pd', 'ricemaiyuni@gmail.com', NULL, '$2y$12$eVdITUeWi4hDW9lPTKyhV.qeeGlCHpKZSXK4SKYDjBZulvwh4uYO6', '["guru_piket"]', NULL, '2026-04-14 19:21:56', '2026-06-28 07:07:37'),
 	(169, 'GUSNELI, S,Pd', 'gusneli@gmail.com', NULL, '$2y$12$EuMLQTk.kjGEp.Okg6FPHOzZntg4FqxaGAiN4LsTS6Srut/O7C42G', '["guru_mapel"]', NULL, '2026-04-14 19:21:56', '2026-06-29 09:35:19'),
-	(171, 'JEFRI YULIANDRI', 'jefriyuliandri@gmail.com', NULL, '$2y$12$vZb2T2HVFNTjt77fO.a9bOYZ.zhPPMFZNouBsrks0c3t/D/nZnlF6', '["guru_mapel"]', NULL, '2026-06-04 10:56:34', '2026-06-07 21:00:55');
+	(171, 'JEFRI YULIANDRI', 'jefriyuliandri@gmail.com', NULL, '$2y$12$vZb2T2HVFNTjt77fO.a9bOYZ.zhPPMFZNouBsrks0c3t/D/nZnlF6', '["guru_piket"]', NULL, '2026-06-04 10:56:34', '2026-07-09 01:42:51'),
+	(172, 'LAILA RAMADHANI, S.Pd', 'lailaramadhani@gmail.com', NULL, '$2y$12$AtW8NZbLIzHC5RY38Q0q7.gO4w9TAvveQZHVufuRwhDDUW5vXL/Y6', '"guru"', NULL, '2026-07-09 01:54:39', '2026-07-09 01:54:39');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
