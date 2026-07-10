@@ -86,7 +86,8 @@
                                         </div>
                                     </div><!-- /.box-body -->
                                     <div class="box-footer">
-                                        <button type="button" id="store-button" class="btn btn-primary" onclick="store_data()">Catat</button>
+                                        <button type="button" id="store-button" class="btn btn-primary"
+                                            onclick="store_data()">Catat</button>
                                         <button type="button" onclick="show_table()"
                                             class="btn btn-secondary">Batal</button>
                                     </div>
@@ -98,15 +99,15 @@
                                 <!-- Toolbar -->
                                 <div class="row mb-3">
                                     <div class="col-md-3">
-                                        @if (auth()->user()->hasRole(['admin','guru_piket']))
-                                        <button onclick="show_form()" class="btn btn-success btn-xs">
-                                            <i class="fa fa-plus"></i> Catat Pelanggaran
-                                        </button>
+                                        @if (auth()->user()->hasRole(['admin', 'guru_piket']))
+                                            <button onclick="show_form()" class="btn btn-success btn-xs">
+                                                <i class="fa fa-plus"></i> Catat Pelanggaran
+                                            </button>
                                         @endif
-                                        @if (auth()->user()->hasRole(['admin','guru_bk','wali_kelas']))
-                                        <button type="button" class="btn btn-warning btn-xs" onclick="cetakPdf()">
-                                            <i class="fa fa-print"></i> Cetak Laporan
-                                        </button>
+                                        @if (auth()->user()->hasRole(['admin', 'guru_bk', 'wali_kelas']))
+                                            <button type="button" class="btn btn-warning btn-xs" onclick="cetakPdf()">
+                                                <i class="fa fa-print"></i> Cetak Laporan
+                                            </button>
                                         @endif
                                     </div>
 
@@ -243,7 +244,8 @@
                 },
                 dataType: "JSON",
                 success: function(response) {
-                    $("#store-button").removeAttr('disabled').text(sessionStorage.getItem('TY') == 'POST' ? 'Catat' : 'Update');
+                    $("#store-button").removeAttr('disabled').text(sessionStorage.getItem('TY') == 'POST' ?
+                        'Catat' : 'Update');
                     if (response.status == true) {
                         setTimeout(() => {
                             Notiflix.Report.success(
@@ -267,43 +269,79 @@
                     }
                 },
                 error: function(xhr) {
-                    $("#store-button").removeAttr('disabled').text(sessionStorage.getItem('TY') == 'POST' ? 'Catat' : 'Update');
+                    $("#store-button").removeAttr('disabled').text(sessionStorage.getItem('TY') == 'POST' ?
+                        'Catat' : 'Update');
                     handleAjaxError(xhr);
                 }
             }).submit();
         }
         get_data = () => {
-            $.ajax({
-                type: "GET",
-                url: `${BASE_URL}/api/pelanggaran`,
-                dataType: "JSON",
-                success: function(response) {
-                    let html = '';
-                    response.data.forEach((item, index) => {
-                        html += `<tr>
-                            <td>${index + 1}</td>
-                            <td>${item.siswa.nama_siswa}</td>
-                            <td>${item.siswa.kelas.nama_kelas}</td>
-                            <td>${item.jenis_pelanggaran}</td>
-                            <td>${item.tanggal_pelanggaran}</td>
-                            <td>${item.poin}</td>
-                            <td>${item.tindakan_sanksi}</td>
-                            <td>${item.keterangan}</td>
-                            <td>
-                                <button class="btn btn-warning btn-xs" onclick="edit_data(${item.id})">
-                                    <i class="fa fa-edit"></i>
-                                </button>
-                                <button class="btn btn-danger btn-xs" onclick="delete_data(${item.id})">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>`;
-                    });
-                    $("#example1 tbody").html(html);
-                },
-                error: function(xhr) {
-                    handleAjaxError(xhr);
-                }
+            let table;
+
+            $(document).ready(function() {
+                table = $('#example1').DataTable({
+                    processing: true,
+                    destroy: true,
+                    autoWidth: false,
+                    ajax: {
+                        url: `${BASE_URL}/api/pelanggaran`,
+                        dataSrc: function(json) {
+                            return json.data;
+                        },
+                        error: function(xhr) {
+                            handleAjaxError(xhr);
+                        }
+                    },
+                    columns: [{
+                            data: null,
+                            render: function(data, type, row, meta) {
+                                return meta.row + 1;
+                            }
+                        },
+                        {
+                            data: 'siswa.nama_siswa',
+                            defaultContent: '-'
+                        },
+                        {
+                            data: 'siswa.kelas.nama_kelas',
+                            defaultContent: '-'
+                        },
+                        {
+                            data: 'jenis_pelanggaran'
+                        },
+                        {
+                            data: 'tanggal_pelanggaran'
+                        },
+                        {
+                            data: 'poin'
+                        },
+                        {
+                            data: 'tindakan_sanksi'
+                        },
+                        {
+                            data: 'keterangan',
+                            defaultContent: '-'
+                        },
+                        {
+                            data: null,
+                            orderable: false,
+                            searchable: false,
+                            render: function(data) {
+                                return `
+                        <button class="btn btn-warning btn-xs"
+                            onclick="edit_data(${data.id})">
+                            <i class="fa fa-edit"></i>
+                        </button>
+
+                        <button class="btn btn-danger btn-xs"
+                            onclick="delete_data(${data.id})">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    `;
+                            }
+                        }
+                    ]
+                });
             });
         }
         delete_data = (id) => {
@@ -386,22 +424,22 @@
             $("#tanggal_sampai").val('');
             get_data();
         }
-        filter_data=()=>{
-            let tanggal_mulai=$("#tanggal_mulai").val();
-            let tanggal_sampai=$("#tanggal_sampai").val();
-            if(tanggal_mulai == '' || tanggal_sampai == ''){
-                if(tanggal_mulai == ''){
+        filter_data = () => {
+            let tanggal_mulai = $("#tanggal_mulai").val();
+            let tanggal_sampai = $("#tanggal_sampai").val();
+            if (tanggal_mulai == '' || tanggal_sampai == '') {
+                if (tanggal_mulai == '') {
                     $(".e-tanggal_mulai").text('Tanggal mulai harus diisi');
-                }else{
+                } else {
                     $(".e-tanggal_mulai").text('');
                 }
-                if(tanggal_sampai == ''){
+                if (tanggal_sampai == '') {
                     $(".e-tanggal_sampai").text('Tanggal sampai harus diisi');
-                }else{
+                } else {
                     $(".e-tanggal_sampai").text('');
                 }
                 return;
-            }else{
+            } else {
                 $(".e-tanggal_mulai").text('');
                 $(".e-tanggal_sampai").text('');
                 $.ajax({
@@ -439,9 +477,10 @@
             }
         }
         cetakPdf = () => {
-            let tanggal_mulai=$("#tanggal_mulai").val();
-            let tanggal_sampai=$("#tanggal_sampai").val();
-            let url = `${BASE_URL}/api/pelanggaran/cetak?tanggal_mulai=${tanggal_mulai}&tanggal_sampai=${tanggal_sampai}`;
+            let tanggal_mulai = $("#tanggal_mulai").val();
+            let tanggal_sampai = $("#tanggal_sampai").val();
+            let url =
+                `${BASE_URL}/api/pelanggaran/cetak?tanggal_mulai=${tanggal_mulai}&tanggal_sampai=${tanggal_sampai}`;
             window.open(url, '_blank');
         }
     </script>

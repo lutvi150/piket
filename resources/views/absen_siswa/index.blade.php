@@ -119,10 +119,10 @@
                     <form action="" id="form-absen" method="post">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="">Tanggal</label>
-                                <input type="date" name="tanggal" id="tanggal" class="form-control" placeholder=""
-                                    aria-describedby="helpId">
-                                <small id="helpId" class="text-muted text-error e-tanggal">Help text</small>
+                                <label for="tanggal">Tanggal</label>
+                                <input type="date" name="tanggal" id="tanggal" class="form-control"
+                                    value="{{ now()->format('Y-m-d') }}" readonly>
+                                <small class="text-muted text-error e-tanggal"></small>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -319,8 +319,8 @@
                         <td>
                             <a href="${BASE_URL}/absensi-siswa/start-absen/${item.id}"  class="btn btn-danger btn-xs"><i class="fa fa-eye"></i> ${isGuruMapel ? 'Mulai Absen' : 'Check Absen'}</a>
                                ${isGuruMapel ? `
-                                        <a href="#" onclick="edit_data(${item.id})" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
-                                        <a href="#" onclick="delete_data(${item.id})" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i>Hapus</a>`:''}
+                                            <a href="#" onclick="edit_data(${item.id})" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                                            <a href="#" onclick="delete_data(${item.id})" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i>Hapus</a>`:''}
                         </td>
                         </tr>`
                 });

@@ -70,24 +70,31 @@
 
     <hr style="border:1px solid #000; margin-top:5px; margin-bottom:20px;">
     <h3>ABSEN SISWA</h3>
-   <table style="border-collapse: collapse; border: none; margin-bottom: 15px;">
-    <tr>
-        <td style="border: none; padding: 3px 10px 3px 0; font-weight: bold; width: 120px;">
-            Kelas
-        </td>
-        <td style="border: none; padding: 3px 0;">
-            : {{ $absen->kelas->nama_kelas ?? '-' }}
-        </td>
-    </tr>
-    <tr>
-        <td style="border: none; padding: 3px 10px 3px 0; font-weight: bold;">
-            Tanggal Absen
-        </td>
-        <td style="border: none; padding: 3px 0;">
-            : {{ \Carbon\Carbon::parse($absen->tanggal)->translatedFormat('d F Y') }}
-        </td>
-    </tr>
-</table>
+    <table style="border-collapse: collapse; border: none; margin-bottom: 15px;">
+        <tr>
+            <td style="border: none; padding: 3px 10px 3px 0; font-weight: bold; width: 120px;">
+                Kelas
+            </td>
+            <td style="border: none; padding: 3px 0;">
+                : {{ $absen->kelas->nama_kelas ?? '-' }}
+            </td>
+        </tr>
+        <tr>
+            <td style="border: none; padding: 3px 10px 3px 0; font-weight: bold;">
+                Tanggal Absen
+            </td>
+            <td style="border: none; padding: 3px 0;">
+                : {{ \Carbon\Carbon::parse($absen->tanggal)->translatedFormat('d F Y') }}
+            </td>
+        </tr>
+    </table>
+    @php
+        $jumlahHadir = $data->where('status', 'H')->count();
+        $jumlahSakit = $data->where('status', 'S')->count();
+        $jumlahIzin = $data->where('status', 'I')->count();
+        $jumlahAlfa = $data->where('status', 'A')->count();
+        $jumlahTotal = $data->count();
+    @endphp
     <table>
         <thead>
             <tr>
@@ -109,6 +116,32 @@
                 </tr>
             @endforeach
         </tbody>
+    </table>
+    <br>
+    <table style="width:20%; border-collapse: collapse;">
+        <tr style="background:#f2f2f2;">
+            <th colspan="2">Rekap Kehadiran</th>
+        </tr>
+        <tr>
+            <td>Total Siswa</td>
+            <td style="text-align:center;">{{ $jumlahTotal }}</td>
+        </tr>
+        <tr>
+            <td>Hadir (H)</td>
+            <td style="text-align:center;">{{ $jumlahHadir }}</td>
+        </tr>
+        <tr>
+            <td>Sakit (S)</td>
+            <td style="text-align:center;">{{ $jumlahSakit }}</td>
+        </tr>
+        <tr>
+            <td>Izin (I)</td>
+            <td style="text-align:center;">{{ $jumlahIzin }}</td>
+        </tr>
+        <tr>
+            <td>Alfa (A)</td>
+            <td style="text-align:center;">{{ $jumlahAlfa }}</td>
+        </tr>
     </table>
     <table style="width:100%; border:none; border-collapse:collapse;">
         <tr>

@@ -81,6 +81,39 @@
             </div><!-- /.row -->
         </section><!-- /.content -->
     </div>
+    <div class="modal fade" id="modalLampiran">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title">Upload Lampiran</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="id_absen" value="{{ $absen->id }}">
+                    <input type="hidden" id="status_absen" value="S">
+                    <input type="hidden" id="piket_id">
+                    <input type="hidden" id="jenis" value="siswa">
+                    <input type="hidden" id="tanggal" value="{{ $absen->tanggal }}">
+                    <input type="hidden" id="id_kelas" value="{{ $absen->id_kelas }}">
+                    <input type="hidden" id="id_mapel" value="{{ $absen->id_kelas }}">
+                    <input type="hidden" id="jam_ke" value="1-8">
+                    <div class="form-group">
+                        <label>Keterangan</label>
+                        <textarea class="form-control" id="keterangan"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Lampiran</label>
+                        <input type="file" class="form-control" id="lampiran" accept=".jpg,.jpeg,.png,.pdf">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="submitLampiran()">
+                        Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <link rel="stylesheet" href="{{ asset('assets/plugins/datatables/dataTables.bootstrap.css') }}">
@@ -201,8 +234,8 @@
             });
         }
         makeAbsensi = (id, status) => {
+            // Alfa hanya keterangan
             if (status === 'Alfa') {
-
                 Notiflix.Confirm.prompt(
                     'Absensi Siswa',
                     'Silahkan isi keterangan Alfa jika ada',
@@ -216,20 +249,28 @@
                         Notiflix.Notify.info('Absensi dibatalkan.');
                     }
                 );
-
                 return;
             }
+
+            // Sakit / Izin
+            // if (status === 'S' || status === 'I') {            
+            if (status === 'S') {
+                $("#piket_id").val(id);
+                $("#modalLampiran").modal("show");
+                $("#status_absen").val(status);
+                $("#id_absen").val(id);
+                return;
+            }
+            // Hadir
             Notiflix.Confirm.show(
-                'Konfirmasi Isi Absen',
+                'Konfirmasi',
                 'Apakah Anda yakin?',
                 'Ya',
                 'Tidak',
                 function() {
                     submitAbsen(id, status);
                 },
-                function() {
-                    Notiflix.Notify.info('Absensi dibatalkan.');
-                }
+                function() {}
             );
         }
 
@@ -245,14 +286,16 @@
                 'Batal',
                 async () => {
                         try {
-                            const response = await fetch(`${BASE_URL}/api/absensi-siswa/hadir-semua/${id_absen}`, {
-                                method: 'GET',
-                                headers: {
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                        .content,
-                                    'Accept': 'application/json'
-                                }
-                            });
+                            const response = await fetch(
+                                `${BASE_URL}/api/absensi-siswa/hadir-semua/${id_absen}`, {
+                                    method: 'GET',
+                                    headers: {
+                                        'X-CSRF-TOKEN': document.querySelector(
+                                                'meta[name="csrf-token"]')
+                                            .content,
+                                        'Accept': 'application/json'
+                                    }
+                                });
 
                             const result = await response.json();
                             if (!response.ok || !result.status) {
@@ -271,5 +314,73 @@
                     }
             );
         };
+        submitLampiran = () => {
+            let formData = new FormData();
+            formData.append('jenis', $("#jenis").val()); // guru / siswa
+            formData.append('piket_id', $("#id_absen").val()); // id guru / siswa
+            formData.append('tanggal', $("#tanggal").val());
+            formData.append('status', $("#status_absen").val());
+            let keterangan = $("#keterangan").val();
+            if (keterangan) {
+                keterangan += " (Diisi oleh guru mapel)";
+            }
+            formData.append('keterangan', keterangan);
+            // jika ada
+            if ($("#id_kelas").length) {
+                formData.append('id_kelas', $("#id_kelas").val());
+            }
+            if ($("#id_mapel").length) {
+                formData.append('id_mapel', $("#id_mapel").val());
+            }
+            if ($("#jam_ke").length) {
+                formData.append('jam_ke', $("#jam_ke").val());
+            }
+            if ($("#terlambat").length) {
+                formData.append('terlambat', $("#terlambat").val());
+            }
+            let file = $("#lampiran")[0].files[0];
+            if (file) {
+                formData.append('lampiran', file);
+            }
+            let id = $("#piket_id").val();
+            let status = $("#status_absen").val();
+            $.ajax({
+                url: `${BASE_URL}/api/rekap-piket`,
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function() {
+                    $(".btn-primary").prop('disabled', true).text('Menyimpan...');
+                },
+                success: function(response) {
+                    $(".btn-primary").prop('disabled', false).text('Simpan');
+                    if (response.status) {
+                        submitAbsen(id, status);
+                        $("#modalLampiran").modal('hide');
+                        $("#lampiran").val('');
+                        $("#keterangan").val('');
+                        Notiflix.Notify.success(response.msg);
+                        get_data();
+                    } else {
+                        Notiflix.Notify.failure(response.msg);
+                    }
+                },
+                error: function(xhr) {
+                    $(".btn-primary").prop('disabled', false).text('Simpan');
+                    if (xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+                        $.each(errors, function(key, value) {
+                            Notiflix.Notify.failure(value[0]);
+                        });
+                    } else {
+                        handleAjaxError(xhr);
+                    }
+                }
+            });
+        }
     </script>
 @endsection
